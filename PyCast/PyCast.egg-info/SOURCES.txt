@@ -1,8 +1,0 @@
-setup.py
-PyCast/__init__.py
-PyCast.egg-info/PKG-INFO
-PyCast.egg-info/SOURCES.txt
-PyCast.egg-info/dependency_links.txt
-PyCast.egg-info/not-zip-safe
-PyCast.egg-info/top_level.txt
-bin/PyCast
