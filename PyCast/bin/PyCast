@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import urllib
 import json
 import re
@@ -28,7 +29,7 @@ def main():
     # correctly get the user's podcast
     while not correctGrab:
 
-        podcastSearch = raw_input("Podcast you want to listen to: ")
+        podcastSearch = raw_input("Podcast you want to download: ")
         podcastSearch = re.sub(r" ", "+", podcastSearch)
 
         # grab podcast info
