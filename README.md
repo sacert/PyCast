@@ -23,7 +23,7 @@ The user will be asked which podcast they would like to search for as well as a 
 
 ##### Files to download options:
 
-* `"all/All"`          -  grab every podcast available from the content provider using "All"
+* `"all/All"`          -  grab every podcast available from the content provider
 * `"[int]"`            -  grab specific podcast, ex: 25
 * `"[int] to/- [int]"` -  grab range of podcasts, ex: 25-30
 * `"new/New/latest"`   -  grab latest podcast from the content provider
