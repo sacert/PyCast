@@ -9,5 +9,5 @@ setup(
 	url = 'https://github.com/sacert/PyCast',
     packages = [ 'PyCast' ],
     scripts=['bin/PyCast'],
-    zip_safe=False
+    zip_safe=True
 )
