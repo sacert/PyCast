@@ -9,12 +9,14 @@ Searches and downloads podcasts to the user's liking. Still adding features to i
 
 ##### Installation
 
-No installation yet, will be implemented soon.
+```                      
+$ python setup.py install
+```
 
 ##### How to use:
 
 ```                      
-$ python PyCast.py
+$ PyCast
 ```
 
 The user will be asked which podcast they would like to search for as well as a being prompted for confirmation to ensure the podcast that has been searched is the correct one.
