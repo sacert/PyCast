@@ -5,7 +5,7 @@
 Searches and downloads podcasts to the user's liking. Still adding features to improve the quality of searching and downloading.
 
 
-![alt tag](https://raw.githubusercontent.com/sacert/PyCast/master/PyCast/PyCastDemo.gif)
+![alt tag](https://raw.githubusercontent.com/sacert/PyCast/master/PyCastDemo.gif)
 
 ##### Installation
 
