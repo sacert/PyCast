@@ -7,6 +7,8 @@ import sys
 from xml.dom import minidom
 from xml.etree import ElementTree as etree
 
+ttyLen = int(os.popen('stty size', 'r').read().split()[1]) 
+
 # progress bar functions
 def _reporthook(numblocks, blocksize, filesize, url=None):
     try:
@@ -19,43 +21,76 @@ def _reporthook(numblocks, blocksize, filesize, url=None):
         sys.stdout.flush()
 
 def geturl(url, dst):
-        urllib.urlretrieve(url, dst,
-                           lambda nb, bs, fs, url=url: _reporthook(nb,bs,fs,url))
+    if(os.path.isfile(dst)):
+        if(raw_input("A file already exists with that name. Continue? (y/n)").lower() == 'n'):
+            print("Move the file and try again")
+            sys.exit(0)
+    try:
+        urllib.urlretrieve(url, dst.encode("ascii", "ignore"),
+                       lambda nb, bs, fs, url=url: _reporthook(nb,bs,fs,url))
+    except IOError:
+        print("There was an error retrieving the data. Check your internet connection and try again.")
+        sys.exit(0)
+    except KeyboardInterrupt:
+        print("\n\nYou have interrupted an active download.\n Cleaning up fines now.")
+        os.remove(dst)
+        sys.exit(1)
 
 
 def main():
-    correctGrab = False
 
     # correctly get the user's podcast
-    while not correctGrab:
+    while True:
 
         podcastSearch = raw_input("Podcast you want to download: ")
         podcastSearch = re.sub(r" ", "+", podcastSearch)
 
         # grab podcast info
         url = "https://itunes.apple.com/search?term=" + podcastSearch + "&entity=podcast"
-        response = urllib.urlopen(url)
+        try:
+            response = urllib.urlopen(url)
+        except IOError:
+            print("There was an error retrieving the data. Check your internet connection and try again.")
+            sys.exit(0)
+
         data = json.loads(response.read())
+        resultCount = data["resultCount"] 
+        print(str(resultCount) + " results were found. Displaying the top ten now")
+        for i in range(resultCount):
+            print(str(i+1) + ": " + data["results"][i]["trackName"].encode("ascii", "ignore"))[:ttyLen]
+            print("  artist: "+ data["results"][i]["artistName"].encode("ascii", "ignore"))[:ttyLen]
 
-        podcastName = data["results"][0]["trackName"]
-        podcastId = data["results"][0]["collectionId"]
+        try:
+            userSelection = int(raw_input("Enter a number (0 if none): "))
+        except ValueError:
+            userSelection = -1
 
-        print ("Podcast: " + podcastName)
-        userCheck = raw_input("Continue? (y/n) ")
-
-        if userCheck == 'Y' or userCheck == 'y' :
+        if userSelection > 0 and userSelection < int(resultCount):
+            podcastName = data["results"][userSelection-1]["trackName"]
+            podcastId = data["results"][userSelection-1]["collectionId"]
+            print("You have selected " + podcastName)
             break
+        else:
+            print("Please search again.")
 
     # grab podcast feed
     url = "https://itunes.apple.com/lookup?id=" + str(podcastId) + "&entity=podcast"
-    response = urllib.urlopen(url)
+    try:
+        response = urllib.urlopen(url)
+    except IOError:
+        print("There was an error retrieving the data. Check your internet connection and try again.")
+        sys.exit(0)
+
     data = json.loads(response.read())
 
     rss = data["results"][0]["feedUrl"]
 
     # grab all podcast .mp3 files
     url_str = rss
-    xml_str = urllib.urlopen(url_str).read()
+    try:
+        xml_str = urllib.urlopen(url_str).read()
+    except IOError:
+        print("There was an error retrieving the data. Check your internet connection and try again.")
     xmldoc = minidom.parseString(xml_str)
 
     values = xmldoc.getElementsByTagName('enclosure')
@@ -78,41 +113,51 @@ def main():
     for val in values:
         mp3list.append(val.attributes['url'].value)
 
+    numTitles = len(titles)
+
+    print("The newest titles are:")
+    for i in range(min(10, len(titles))):
+        print titles[i].firstChild.nodeValue.encode("ascii", "ignore").strip('\n')
+
     # get how the user wants to download the files
-    userDownload = raw_input('Which file(s) to download? ')
 
     downloadAll = False
-    downloadOne = 0
+    downloadOne = -1
     downloadNew = False;
-    downloadRangeStart = 0
-    downloadRangeFinish = 0
-    badInput = False
+    downloadRangeStart = -1
+    downloadRangeFinish = -1
+    badInput = True
 
-    if userDownload == "All" or userDownload == "all":
-        downloadAll = True
-    elif userDownload.isdigit() > 0:
-        downloadOne = len(mp3list) - int(userDownload)
-    elif 'to' in userDownload or '-' in userDownload:
-        if('to' in userDownload ):
-            rangeList = re.split('to', userDownload)
+    while badInput: 
+        badInput = False
+        userDownload = raw_input('Which file(s) to download? ')
+        if userDownload == "All" or userDownload == "all":
+            downloadAll = True
+        elif userDownload.isdigit():
+            downloadOne = len(mp3list) - int(userDownload) + 1
+        elif 'to' in userDownload or '-' in userDownload:
+            if('to' in userDownload ):
+                rangeList = re.split('to', userDownload)
+            else:
+                rangeList = re.split('-', userDownload)
+                #print(rangeList)
+                if(rangeList.count('')):
+                    print ("Error: bad input")
+                    badInput = True
+            if not badInput:        
+                downloadRangeStart = len(mp3list) - int(rangeList[1])
+                downloadRangeFinish = len(mp3list) - int(rangeList[0])
+                if downloadRangeStart < 1 or downloadRangeFinish < 1:
+                    print ("Error: bad input")
+                    badInput = True
+                if downloadRangeStart > downloadRangeFinish:
+                    print ("Error: bad input")
+                    badInput = True
+        elif userDownload == "latest" or userDownload == "new" or userDownload == "New":
+            downloadNew = True
         else:
-            rangeList = re.split('-', userDownload)
-        if downloadRangeStart < 1 or downloadRangeFinish < 1:
             print ("Error: bad input")
             badInput = True
-        downloadRangeStart = len(mp3list) - int(rangeList[1])
-        downloadRangeFinish = len(mp3list) - int(rangeList[0])
-        if downloadRangeStart > downloadRangeFinish:
-            print ("Error: bad input")
-            badInput = True
-    elif userDownload == "latest" or userDownload == "new" or userDownload == "New":
-        downloadNew = True
-    else:
-        print ("Error: bad input")
-        badInput = True
-
-    if badInput == True:
-        sys.exit()
 
     if downloadAll:
         for i in range(len(mp3list)):
@@ -121,7 +166,7 @@ def main():
             geturl(mp3list[i], saveLoc)
             print("\n")
 
-    if downloadOne > 0:
+    if downloadOne >= 0:
         print("Downloading: " + str(titles[int(downloadOne)].firstChild.nodeValue))
         saveLoc = os.path.dirname(os.path.realpath(__file__)) + "/" + titles[int(downloadOne)].firstChild.nodeValue + ".mp3"
         geturl(mp3list[int(downloadOne)], saveLoc)
@@ -139,4 +184,8 @@ def main():
         geturl(mp3list[int(downloadOne)], saveLoc)
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('\n')
+        sys.exit(0)
