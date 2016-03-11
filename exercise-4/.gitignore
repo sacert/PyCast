@@ -1,0 +1,8 @@
+*~
+.vagrant
+
+*.pyc
+
+Gemfile.lock
+log/*
+.bundle
