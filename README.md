@@ -5,12 +5,18 @@
 Searches and downloads podcasts to the user's liking. Still adding features to improve the quality of searching and downloading.
 
 
-![alt tag](https://raw.githubusercontent.com/sacert/PyCast/master/PyCast/PyCastDemo.gif)
+![alt tag](https://raw.githubusercontent.com/sacert/PyCast/master/PyCastDemo.gif)
 
 ##### Installation
 
+Ether download and install or pip it
+
 ```                      
 $ python setup.py install
+```
+
+```                      
+$ sudo pip install https://github.com/sacert/PyCast/archive/master.zip
 ```
 
 ##### How to use:
