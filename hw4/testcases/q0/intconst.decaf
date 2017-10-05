@@ -1,0 +1,10 @@
+extern void print_int(int);
+class Test {
+	int main()
+	{
+		int x;
+		print_int(0);
+		print_int(12345);
+		print_int(-12345);
+	}
+}

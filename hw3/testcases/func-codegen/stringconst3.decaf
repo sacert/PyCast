@@ -1,0 +1,9 @@
+extern void print_string(string);
+
+class Test {
+	int main() {
+		print_string("hello,");
+		print_string(" world");
+		print_string("\n");
+	}
+}

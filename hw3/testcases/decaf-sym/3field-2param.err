@@ -1,0 +1,7 @@
+defined variable: x, with type: int, on line number: 2
+defined variable: y, with type: int, on line number: 3
+defined variable: z, with type: bool, on line number: 4
+Warning: redefining previously defined identifier: y
+defined variable: y, with type: int, on line number: 5
+Warning: redefining previously defined identifier: x
+defined variable: x, with type: int, on line number: 5

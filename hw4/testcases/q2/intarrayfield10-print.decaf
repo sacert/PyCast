@@ -1,0 +1,26 @@
+extern void print_int(int);
+class Test {
+	int x[10];
+	int main() {
+		x[0] = 10;
+		x[1] = 11;
+		x[2] = 12;
+		x[3] = 13;
+		x[4] = 14;
+		x[5] = 15;
+		x[6] = 16;
+		x[7] = 17;
+		x[8] = 18;
+		x[9] = 19;
+		print_int(x[0]);
+		print_int(x[1]);
+		print_int(x[2]);
+		print_int(x[3]);
+		print_int(x[4]);
+		print_int(x[5]);
+		print_int(x[6]);
+		print_int(x[7]);
+		print_int(x[8]);
+		print_int(x[9]);
+	}
+}

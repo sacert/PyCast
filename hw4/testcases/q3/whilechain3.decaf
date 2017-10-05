@@ -1,0 +1,31 @@
+extern void print_int(int);
+extern void print_string(string);
+class Test {
+	int main() {
+		int x;
+		x = 0;
+		print_string("a");
+		print_int(x);
+		while (x < 10) {
+			print_string("b");
+			print_int(x);
+			x = x + 1;
+		}
+		print_string("c");
+		print_int(x);
+		while (x < 0) {
+			print_string("d");
+			print_int(x);
+			x = x - 1;
+		}
+		print_string("e");
+		print_int(x);
+		while (x < 20) {
+			print_string("f");
+			print_int(x);
+			x = x + 1;
+		}
+		print_string("g");
+		print_int(x);
+	}
+}

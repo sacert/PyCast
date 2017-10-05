@@ -1,0 +1,8 @@
+extern void print_int(int int);
+
+class QuickSort {
+	int x;
+	void main()
+	{
+	}
+}

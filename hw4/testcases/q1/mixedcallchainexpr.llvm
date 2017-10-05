@@ -1,0 +1,61 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define void @test3(i1 %a, i32 %x) {
+entry:
+  %a1 = alloca i1
+  store i1 %a, i1* %a1
+  %x2 = alloca i32
+  store i32 %x, i32* %x2
+  %x3 = load i32* %x2
+  call void @print_int(i32 %x3)
+  %a4 = load i1* %a1
+  %zexttmp = zext i1 %a4 to i32
+  call void @print_int(i32 %zexttmp)
+  ret void
+}
+
+define void @test2(i32 %x, i1 %a) {
+entry:
+  %x1 = alloca i32
+  store i32 %x, i32* %x1
+  %a2 = alloca i1
+  store i1 %a, i1* %a2
+  %x3 = load i32* %x1
+  call void @print_int(i32 %x3)
+  %a4 = load i1* %a2
+  %zexttmp = zext i1 %a4 to i32
+  call void @print_int(i32 %zexttmp)
+  %a5 = load i1* %a2
+  %nottmp = xor i1 %a5, true
+  %x6 = load i32* %x1
+  %addtmp = add i32 %x6, 1
+  call void @test3(i1 %nottmp, i32 %addtmp)
+  ret void
+}
+
+define void @test1(i1 %a, i32 %x) {
+entry:
+  %a1 = alloca i1
+  store i1 %a, i1* %a1
+  %x2 = alloca i32
+  store i32 %x, i32* %x2
+  %x3 = load i32* %x2
+  call void @print_int(i32 %x3)
+  %a4 = load i1* %a1
+  %zexttmp = zext i1 %a4 to i32
+  call void @print_int(i32 %zexttmp)
+  %x5 = load i32* %x2
+  %addtmp = add i32 %x5, 1
+  %a6 = load i1* %a1
+  %nottmp = xor i1 %a6, true
+  call void @test2(i32 %addtmp, i1 %nottmp)
+  ret void
+}
+
+define i32 @main() {
+entry:
+  call void @test1(i1 true, i32 1)
+  ret i32 0
+}

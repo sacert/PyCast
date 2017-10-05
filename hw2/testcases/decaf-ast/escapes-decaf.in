@@ -1,0 +1,7 @@
+extern void print_string(string);
+
+class Print {
+	void main() {
+		print_string("\t\v\r\n\a\f\b\\");
+	}
+}

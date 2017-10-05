@@ -1,0 +1,16 @@
+; ModuleID = 'Test'
+
+@x = global [2 x i32] zeroinitializer
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  store i32 10, i32* getelementptr inbounds ([2 x i32]* @x, i32 0, i32 0)
+  store i32 11, i32* getelementptr inbounds ([2 x i32]* @x, i32 0, i32 1)
+  %arrayval = load i32* getelementptr inbounds ([2 x i32]* @x, i32 0, i32 0)
+  call void @print_int(i32 %arrayval)
+  %arrayval1 = load i32* getelementptr inbounds ([2 x i32]* @x, i32 0, i32 1)
+  call void @print_int(i32 %arrayval1)
+  ret i32 0
+}

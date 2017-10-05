@@ -1,0 +1,7 @@
+extern void print_string(string);
+
+class Test {
+	int main() {
+		print_string("1\t2\v3\r4\n5\a6\f7\b8\\9\"10");
+	}
+}

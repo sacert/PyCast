@@ -1,0 +1,10 @@
+
+#include <stdio.h>
+
+/* a "multiline" /     
+  comment **/
+
+int main () {
+  return 1;
+}
+

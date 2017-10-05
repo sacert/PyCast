@@ -1,0 +1,7 @@
+class Test {
+	bool x[3];
+	int main() {
+		bool y;
+		y = x[0];
+	}
+}

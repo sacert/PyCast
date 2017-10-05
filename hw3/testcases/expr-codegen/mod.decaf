@@ -1,0 +1,11 @@
+extern void print_int(int);
+class Test {
+	int main()
+	{
+		int x;
+		print_int(10 % 2);
+		print_int(10 % 5);
+		print_int(10 % 3);
+		print_int(13 % 3);
+	}
+}

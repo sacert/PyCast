@@ -1,0 +1,391 @@
+#!/bin/sh
+# this line comments next for wish \
+exec /usr/bin/wish8.5 -f "$0" "$@"
+#
+# Usage: viewtree <file>   : where each line of <file> contains a parse tree
+#   or   viewtree          : where parse trees are expected from STDIN
+#
+# Parse trees must conform to standard LISP-like syntax:
+# Tree -> (CONSTITUENT-LABEL Tree1 Tree2 .. TreeN) 
+# Tree -> (POS-LABEL word)
+#
+# Bindings: (For Top Level Window)
+#           <Left-Button>  		: Previous Tree
+#           <Right-Button> 		: Next Tree
+#           <Middle-Button> or <RETURN>	: Goto Item# in box
+#           <q>            		: Exit
+#           <p>                         : Generate Encapsulated Postscript 
+#					of current tree
+#
+# To browse corpora, type an item number in the upper left box,
+# and hit <RETURN> or <Middle-Button> on mouse
+# 
+# 
+# 
+# Written by:	Adwait Ratnaparkhi
+#             	Dept. of Computer and Information Science
+#	 	University of Pennsylvania, 1996
+#		adwait@unagi.cis.upenn.edu
+#
+
+proc findmax {a b} {
+    if { $a > $b } {
+	return $a
+    } else {
+	return $b
+    }
+}
+
+proc findmin {a b} {
+    if { $a < $b } {
+	return $a
+    } else {
+	return $b
+    }
+} 
+
+proc findmaxdepth l {
+    set maxdepth 0
+    
+    if { [ llength $l ] == 0 } {
+	return 0
+    } else {
+	set children [ lrange $l 1 [ expr [ llength $l ] - 1 ] ]
+	foreach child $children {
+	    set maxdepth [ findmax $maxdepth [ findmaxdepth $child ] ]
+	}
+	
+	return [ expr $maxdepth + 1 ] 
+    }
+}
+
+
+proc countleaves tree {
+    if { [ llength $tree ] == 1 } {
+	return 1
+    } else {
+	set children [ lrange $tree 1 [ expr [ llength $tree ] - 1 ] ]
+	set numleaves 0
+	foreach child $children {
+	    set numleaves [ expr $numleaves + [ countleaves $child ] ]
+	}
+
+	return $numleaves
+    }
+}
+    
+    
+    
+proc assigncolor {text} {
+    set wordlist [ split $text ":" ]
+
+    set num1 [ lindex $wordlist 1 ]
+    set num2 [ lindex $wordlist 2 ]
+    set maxprob .5
+
+    if { [ expr [ expr $num1 >= 0 && $num1 <= $maxprob ] || [ expr $num2 >=0 && $num2 <= $maxprob ] ] } {
+	return "red";
+    }
+    
+    return "black";
+}
+
+proc showleaf {text depth id} {
+
+    global curleafXposition YDIST XDIST
+
+    set Y [ expr $depth * $YDIST ]
+
+    .c create text $curleafXposition $Y -text $text -anchor nw -tag label${id}
+
+    set boundingbox [ .c bbox label${id} ]
+    set width [ expr [ lindex $boundingbox 2 ] - [ lindex $boundingbox 0 ] ]
+
+    set oldX $curleafXposition
+    set curleafXposition [ expr $curleafXposition + $width + $XDIST ]
+    
+    # Return coordinates of the "center" of the button
+    return [ list [ expr $oldX + [ expr $width / 2 ] ] $Y ]
+}
+
+
+proc shownode {text X depth id childrenXY} {
+
+    global curleafXposition XDIST YDIST
+    
+    set Y [ expr $depth * $YDIST ]
+    
+    .c create text $X $Y -text $text -anchor n -tag label${id}
+    
+    # bounding box has format x1 y1 x2 y2 
+
+    set boundingbox [ .c bbox label${id} ]
+    set parentheight [ expr [ lindex $boundingbox 3 ] - [ lindex $boundingbox 1 ] ]
+    set width [ expr [ lindex $boundingbox 2 ] - [ lindex $boundingbox 0 ] ]
+
+    set curleafXposition [ findmax [ expr $X + $width + $XDIST ] $curleafXposition ]
+
+    foreach child $childrenXY {
+	.c create line $X [ expr $Y + $parentheight ] [ lindex $child 0 ] [ lindex $child 1 ]
+    }
+
+    return [ list $X $Y ]
+}
+    
+
+proc isleaf tree {
+    return [ expr [ llength $tree ] == 1 ]
+}
+
+#
+# Returns (X,Y) list corresponding to position of top node in 'tree'
+#
+proc display {tree depth} {
+
+    global nodeid maxdepth
+
+    if { [ isleaf $tree ] == 1 } {
+	set nodeid [ expr $nodeid + 1 ]
+	#return [ showleaf $tree $maxdepth $nodeid ]
+	return [ showleaf $tree $depth $nodeid ]
+    } else {
+	set children [ lrange $tree 1 [ llength $tree ] ]
+	set XYlist {}
+
+	foreach child $children {
+	    set XY [ display $child [ expr $depth + 1 ] ] 
+	    
+	    lappend XYlist $XY
+	}
+	
+	#puts $XYlist
+	set numchildren [ llength $children ]
+	set first [ lindex $XYlist 0 ]
+	set last [ lindex $XYlist [ expr $numchildren - 1 ] ]
+	
+	set avgX [ expr [ expr [ lindex $first 0 ] + [ lindex $last 0 ] ] / 2 ]
+
+	set nodeid [ expr $nodeid + 1 ]
+
+	return [ shownode [ lindex $tree 0 ] $avgX $depth $nodeid $XYlist ]
+    }
+}
+	
+
+
+#
+# Vertical distance from top corner of node to top corner of child
+# 
+set YDIST 50
+
+#
+# Horiz distance between end of one leaf, beginning of next
+#
+set XDIST 30
+
+set XMARGIN 20
+
+proc doit {} {
+
+    global XMARGIN curleafXposition nodeid maxdepth YDIST XDIST corpus itemnumber maxheight
+
+    set line [ lindex $corpus $itemnumber ]
+
+    regsub -all "\\\\\\)" $line "__RP" line
+    regsub -all "\\\\\\(" $line "__LP" line
+    regsub -all "\}" $line "_RCB_" line
+    regsub -all "\{" $line "_LCB_" line
+    regsub -all "\\)" $line "\}" line
+    regsub -all "\\(" $line "\{" line
+    regsub -all "__RP" $line "\\\\\\)" line
+    regsub -all "__LP" $line "\\\\\\(" line
+    #puts $line
+
+    # remove one level of list embedding from original string
+    set tree [ lindex $line 0 ] 
+    set maxdepth [ findmaxdepth $tree ]    
+    set maxheight [ expr [ expr $maxdepth + 1 ] * $YDIST ]
+
+    canvas .c -yscrollcommand {.s set} -xscrollcommand { .s2 set } 
+
+    set curleafXposition $XMARGIN
+    set nodeid 0
+    #puts $tree
+    display $tree 0
+
+    # 800 x 800 seems like a good initial max viewing area
+    .c configure -scrollregion [ list 0 0 $curleafXposition $maxheight ] -height [ findmin 800 $maxheight ] -width [ findmin 800 $curleafXposition ]
+    pack .s -side left -fill y
+    pack .s2 -side bottom -fill x
+    pack .c -side left -expand yes -fill both
+ 
+    set labelht [ expr $maxheight - 18 ]
+    place .label -in .c -x 40 -y $labelht -anchor ne
+    place .entry -in .c -x 40 -y $labelht -anchor nw
+    .entry delete 0 [ string length [ .entry get ] ]
+    .entry insert 0 $itemnumber
+    raise .entry
+    raise .label
+
+    # No particular reason for this min size
+
+    wm minsize . 200 200 
+    wm maxsize . $curleafXposition $maxheight
+
+    #
+    # Remove focus from entry widget
+    focus .
+
+    bind . <KeyPress-q> { exit 0 }
+
+    bind . <KeyPress-p> { 
+	global curleafXposition maxheight
+	
+	set filename [ join [ list $itemnumber ".eps" ] "" ]
+
+	set answer [ tk_dialog .ask "Print" [ join [ list "Generate Encapsulated Postscript to File: " $filename "?" ] ] "" 0 "Yes" "No" ]
+	
+	if { $answer == 0 } {
+	    .c postscript -file $filename -x 0 -y 0 -width $curleafXposition -height $maxheight -rotate false
+# -pagewidth 10.5i
+	}
+    }
+    
+    bind . <KeyPress-j> { 
+	global itemnumber
+	if { [ checkrange [ expr $itemnumber - 1 ] ] } {
+	    destroy .c  
+	    set itemnumber [ expr $itemnumber - 1 ]
+	    doit 
+	} 	
+    }
+
+    bind .c <1> { 
+	global itemnumber
+	if { [ checkrange [ expr $itemnumber - 1 ] ] } {
+	    destroy .c  
+	    set itemnumber [ expr $itemnumber - 1 ]
+	    doit 
+	} 	
+    }
+
+    bind . <KeyPress-k> { 
+	global itemnumber
+	if { [ checkrange [ expr $itemnumber + 1 ] ] } {
+	    destroy .c  
+	    set itemnumber [ expr $itemnumber + 1 ]
+	    doit 
+	} 
+    }
+	
+    bind .c <3> { 
+	global itemnumber
+	if { [ checkrange [ expr $itemnumber + 1 ] ] } {
+	    destroy .c  
+	    set itemnumber [ expr $itemnumber + 1 ]
+	    doit 
+	} 
+    }
+
+    bind .c <2> {
+	global itemnumber
+	if { [ checkvalid [ .entry get ] ] && [ checkrange [ .entry get ] ] } {
+	    destroy .c
+	    set itemnumber [ .entry get ]
+	    doit
+	}
+    }
+
+    bind .entry <KeyPress-Return> {
+	global itemnumber
+	if { [ checkvalid [ .entry get ] ] && [ checkrange [ .entry get ] ] } {
+	    destroy .c
+	    set itemnumber [ .entry get ]
+	    doit
+	}
+    }
+}
+
+proc checkrange itemnumber {
+    global corpus
+
+    if { $itemnumber < [ llength $corpus ] && $itemnumber >= 0 } {
+	return 1
+    } else {
+	#tk_dialog .error  "Out of Range" "That item is out of range!" "" "" "OK"
+	return 0
+    }
+}
+
+proc checkvalid number {
+    
+    if { [ regexp (^\[0-9\]+$) $number ] } {
+	return 1
+    } else {
+	tk_dialog .error "Invalid Number" "\"$number\" is not a valid number!" "" "" "OK"
+	return 0
+    }
+}	
+    
+
+    
+
+proc readall fileid {
+    
+    set corpus {}
+    
+    while { [ expr ! [ eof $fileid ] ] } {
+	set line [ gets $fileid ]
+	
+	if { ! [ expr { $line == "" } ] } {
+	    append corpus " "
+	    append corpus [ list $line ]
+	}
+	
+    }
+
+
+    return $corpus
+}
+
+
+
+set windowname $argv0
+append windowname ": "
+
+if { $argc == 1 } {
+    
+    set fileid [ open [ lindex $argv 0 ] r ]
+    append windowname [ lindex $argv 0 ]
+} else {
+    set fileid stdin
+    append windowname "STDIN"
+}
+
+
+
+set corpus [ readall $fileid ]
+
+#
+# Initialize scrollbar
+#
+scrollbar .s -command { .c yview } -orient vertical
+scrollbar .s2 -command { .c xview } -orient horizontal
+
+#
+# Initialize item counter
+#
+entry .entry -width 6 -relief sunken
+label .label -text "Item:"
+
+
+#
+# Set window name
+# 
+
+
+wm title . $windowname
+
+set itemnumber 0
+doit
+

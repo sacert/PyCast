@@ -1,0 +1,9 @@
+class C {
+	void f() {
+		if (leftPtr >= rightPtr) {
+			x = 1;
+		} else {
+			x = 2;
+		}
+	}
+}

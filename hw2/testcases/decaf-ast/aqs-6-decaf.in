@@ -1,0 +1,9 @@
+class QuickSort {
+	void swap(int leftPtr, int rightPtr) {
+		
+		int temp;
+		temp = list[leftPtr];
+		list[leftPtr] = list[rightPtr];
+		list[rightPtr] = temp;
+	}
+}

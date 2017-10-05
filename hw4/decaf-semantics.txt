@@ -1,0 +1,69 @@
+Semantics for homework 4
+------------------------
+
+This section clarifies things in homework 4. Anything in this section may be tested for the homework.
+
+For hw4:
+1.
+  - scoping rule number (7) below
+  - your compiler must handle a non-void function with no return statement (although the return value can be undefined in this case)
+3.
+  - break and continue apply to the innermost containing loop
+  - the behaviours of break and continue outside of a loop are undefined (this is not required to be a compile time error for homework 4, but is in the full semantics below)
+4c. to clarify the rules:
+  - binary + - * / % >> << < > <= >= and unary - only work on integer expressions
+  - binary && || and unary ! only work on boolean expressions
+  - binary == != work on any type, but both operands have to have the same type
+
+Scoping
+-------
+
+1. having two fields with the same name is a semantic error
+2. having two methods with the same name is a semantic error
+3. having a field and a method with the same name is a semantic error
+4. externs count as methods for scoping
+5. having two local variables with the same name declared at the same block is a semantic error
+       eg { int x; int x; } is an error, but { int x; { int x; } } is ok
+6. having a local variable in the outer block of a method that has a parameter with the same name is a semantic error
+       eg void foo(int x) { int x; } is an error, but void foo(int x) { { int x; } } is ok
+7. a function can be referred to anywhere in the program, including before its definition
+       eg class C { void foo() { bar() }; void bar() {}; /* ... */ } is ok
+8. functions, fields, arguments, and local variables all share the same namespace (symbol table) and can shadow each other except for the above rules
+       eg in class C { void foo() {}; void bar() { int foo; foo(); } /* ... */ } the "foo();" refers to the local int variable, not the function
+
+Other semantics for Decaf
+-------------------------
+
+This section defines other semantics for Decaf. I will not be testing these for homework 4 (if you see any of these cases in the testcases, let me know).
+
+- there are no restrictions on the type of main
+- assigning a scalar to an array is considered a type mismatch
+- calling a field, parameter, or local variable (ie foo(...)) is a semantic error
+- these produce undefined behaviour, but must not produce compile time semantic errors:
+       - the value of any uninitialized scalar variable or array element
+       - a function with no return statement is equivalent to ending the function with a return statement that has no expression ("return;")
+       - assigning to an array cell at an invalid index
+- any bool argument to a integer parameter must be converted while keeping its value (not just for print_int)
+- passing a argument to a function parameter with a different type is a semantic error except for the special case of passing a bool as an integer
+- an array of size less than or equal to zero is a semantic error
+- a break or continue statement outside of a loop is a semantic error
+- assignment to a function parameter is valid and should change the value as for a local variable
+- the && and || operators are short-circuiting (this is already specified in the spec)
+- if you have multiple return statements in one block then only the first is used, but the others should still be type checked
+- indexing a scalar is a semantic error
+       eg { int x; x[0] = 1; } is a semantic error, { int x; int y; y = x[0]; } is a semantic error, and the same if x is a field
+- indexing with a bool is a semantic error
+       eg { int xs[10]; int main() { int x; x = xs[true]; } is a semantic error
+- using a non-bool expression for a loop condition is a semantic error
+       eg { while (1) {} } and { int x; for (x = 0; 1; x = x + 1) {} } are semantic errors
+- using a non-bool expression in an if statement condition is a semantic error
+       eg { if (0) {} } is a semantic error
+- a return statement with an expression is not allowed in function with void return type
+       eg { void foo() { return (1); } and { void bar() {} void foo() { return (bar()); } are both semantic errors
+- a return statement with no expression in a non-void function produces an undefined return value
+       eg { int foo() { return; } int main() { int x; x = foo(); } } is a not a semantic error, but the value of x may be anything
+
+TODO:
+       - cannot use a void function in an expression
+               eg { void foo() {} int main() { if (foo()) {} } is invalid }
+       - cannot call a method with the wrong number of arguments

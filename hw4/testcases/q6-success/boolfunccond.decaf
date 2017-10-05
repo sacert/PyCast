@@ -1,0 +1,9 @@
+extern void print_int(int);
+
+class C {
+  bool foo() { return(true); }
+  int main() { 
+    if (foo()) { 
+      print_int(1); } 
+    }
+}

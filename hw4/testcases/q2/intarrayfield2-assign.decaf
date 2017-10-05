@@ -1,0 +1,7 @@
+class Test {
+	int x[2];
+	int main() {
+		x[0] = 10;
+		x[1] = 11;
+	}
+}

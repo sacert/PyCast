@@ -1,0 +1,5 @@
+class Test {
+	int x[2];
+	int main() {
+	}
+}

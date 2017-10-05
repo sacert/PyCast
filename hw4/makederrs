@@ -1,0 +1,1 @@
+ls -1 *.decaf | grep -v '\-ok' | sed -e 's|\.decaf$||g' | while read f; do touch $f.derr; done

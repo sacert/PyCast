@@ -1,0 +1,7 @@
+Tasks I’ve completed:
+
+1 ) wrote expr-interpreter
+2 ) re-wrote lexical parser for decaf-ast (decaf-ast.lex)
+3 ) wrote decaf-ast.y
+4 ) wrote decaf-ast.cc
+5 ) wrote integrate decaf-ast.y with decaf-ast.cc

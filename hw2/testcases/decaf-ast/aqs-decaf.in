@@ -1,0 +1,9 @@
+extern void print_string(string);
+extern void print_int(int);
+
+class QuickSort {
+	int x;
+	void main()
+	{
+	}
+}

@@ -1,0 +1,95 @@
+; ModuleID = 'Test'
+
+@globalstring = private unnamed_addr constant [2 x i8] c"a\00"
+@globalstring1 = private unnamed_addr constant [2 x i8] c"b\00"
+@globalstring2 = private unnamed_addr constant [2 x i8] c"c\00"
+@globalstring3 = private unnamed_addr constant [2 x i8] c"d\00"
+@globalstring4 = private unnamed_addr constant [2 x i8] c"e\00"
+@globalstring5 = private unnamed_addr constant [2 x i8] c"f\00"
+@globalstring6 = private unnamed_addr constant [2 x i8] c"g\00"
+@globalstring7 = private unnamed_addr constant [2 x i8] c"h\00"
+@globalstring8 = private unnamed_addr constant [2 x i8] c"i\00"
+
+declare void @print_string(i8*)
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  %y = alloca i32
+  %z = alloca i32
+  store i32 0, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring, i32 0, i32 0))
+  %x1 = load i32* %x
+  call void @print_int(i32 %x1)
+  br label %loop
+
+loop:                                             ; preds = %end10, %entry
+  %x2 = load i32* %x
+  %lttmp = icmp slt i32 %x2, 3
+  br i1 %lttmp, label %body, label %end
+
+body:                                             ; preds = %loop
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring1, i32 0, i32 0))
+  %x3 = load i32* %x
+  call void @print_int(i32 %x3)
+  %x4 = load i32* %x
+  %addtmp = add i32 %x4, 1
+  store i32 %addtmp, i32* %x
+  store i32 0, i32* %y
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring2, i32 0, i32 0))
+  %y5 = load i32* %y
+  call void @print_int(i32 %y5)
+  br label %loop6
+
+end:                                              ; preds = %loop
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring8, i32 0, i32 0))
+  %x25 = load i32* %x
+  call void @print_int(i32 %x25)
+  ret i32 0
+
+loop6:                                            ; preds = %end19, %body
+  %y7 = load i32* %y
+  %lttmp8 = icmp slt i32 %y7, 2
+  br i1 %lttmp8, label %body9, label %end10
+
+body9:                                            ; preds = %loop6
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring3, i32 0, i32 0))
+  %y11 = load i32* %y
+  call void @print_int(i32 %y11)
+  %y12 = load i32* %y
+  %addtmp13 = add i32 %y12, 1
+  store i32 %addtmp13, i32* %y
+  store i32 0, i32* %z
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring4, i32 0, i32 0))
+  %z14 = load i32* %z
+  call void @print_int(i32 %z14)
+  br label %loop15
+
+end10:                                            ; preds = %loop6
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring7, i32 0, i32 0))
+  %y24 = load i32* %y
+  call void @print_int(i32 %y24)
+  br label %loop
+
+loop15:                                           ; preds = %body18, %body9
+  %z16 = load i32* %z
+  %lttmp17 = icmp slt i32 %z16, 5
+  br i1 %lttmp17, label %body18, label %end19
+
+body18:                                           ; preds = %loop15
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring5, i32 0, i32 0))
+  %z20 = load i32* %z
+  call void @print_int(i32 %z20)
+  %z21 = load i32* %z
+  %addtmp22 = add i32 %z21, 1
+  store i32 %addtmp22, i32* %z
+  br label %loop15
+
+end19:                                            ; preds = %loop15
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring6, i32 0, i32 0))
+  %z23 = load i32* %z
+  call void @print_int(i32 %z23)
+  br label %loop6
+}

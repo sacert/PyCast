@@ -1,0 +1,8 @@
+extern void print_int(int);
+class Test {
+	bool x[3];
+	int main() {
+		x[1] = false;
+		print_int(x[1]);
+	}
+}

@@ -1,0 +1,24 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define void @test(i1 %a) {
+entry:
+  %a1 = alloca i1
+  store i1 %a, i1* %a1
+  call void @print_int(i32 1)
+  ret void
+}
+
+define i32 @main() {
+entry:
+  br i1 true, label %noskct, label %skctend
+
+noskct:                                           ; preds = %entry
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ true, %entry ], [ true, %noskct ]
+  call void @test(i1 %phival)
+  ret i32 0
+}

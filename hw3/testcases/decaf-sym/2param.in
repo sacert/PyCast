@@ -1,0 +1,9 @@
+class C {
+    int foo(int x, int y) {
+        x = 1;
+        y = 1;
+    }
+    int main() {
+        foo(1,2);
+    }
+}

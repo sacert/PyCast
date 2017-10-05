@@ -1,0 +1,63 @@
+; ModuleID = 'Test'
+
+@globalstring = private unnamed_addr constant [2 x i8] c"a\00"
+@globalstring1 = private unnamed_addr constant [2 x i8] c"b\00"
+@globalstring2 = private unnamed_addr constant [2 x i8] c"c\00"
+@globalstring3 = private unnamed_addr constant [2 x i8] c"d\00"
+@globalstring4 = private unnamed_addr constant [2 x i8] c"e\00"
+@globalstring5 = private unnamed_addr constant [2 x i8] c"f\00"
+@globalstring6 = private unnamed_addr constant [2 x i8] c"g\00"
+@globalstring7 = private unnamed_addr constant [2 x i8] c"h\00"
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring, i32 0, i32 0))
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 true, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring1, i32 0, i32 0))
+  br label %end
+
+end:                                              ; preds = %iffalse, %iftrue
+  br label %ifstart1
+
+iffalse:                                          ; preds = %ifstart
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring2, i32 0, i32 0))
+  br label %end
+
+ifstart1:                                         ; preds = %end
+  br i1 false, label %iftrue2, label %iffalse4
+
+iftrue2:                                          ; preds = %ifstart1
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring3, i32 0, i32 0))
+  br label %end3
+
+end3:                                             ; preds = %iffalse4, %iftrue2
+  br label %ifstart5
+
+iffalse4:                                         ; preds = %ifstart1
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring4, i32 0, i32 0))
+  br label %end3
+
+ifstart5:                                         ; preds = %end3
+  br i1 true, label %iftrue6, label %iffalse8
+
+iftrue6:                                          ; preds = %ifstart5
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring5, i32 0, i32 0))
+  br label %end7
+
+end7:                                             ; preds = %iffalse8, %iftrue6
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring7, i32 0, i32 0))
+  ret i32 0
+
+iffalse8:                                         ; preds = %ifstart5
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring6, i32 0, i32 0))
+  br label %end7
+}

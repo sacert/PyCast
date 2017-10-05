@@ -1,0 +1,17 @@
+; ModuleID = 'Test'
+
+@x = global i32 0
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  store i32 1, i32* @x
+  %x = load i32* @x
+  %addtmp = add i32 %x, 100
+  store i32 %addtmp, i32* @x
+  %x1 = load i32* @x
+  %subtmp = sub i32 %x1, 50
+  call void @print_int(i32 %subtmp)
+  ret i32 0
+}

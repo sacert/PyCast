@@ -1,0 +1,10 @@
+extern void print_int(int);
+
+class Test {
+	void test(bool a, bool b) {
+		print_int(2);
+	}
+	int main() {
+		test(true, false);
+	}
+}

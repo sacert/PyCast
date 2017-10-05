@@ -1,0 +1,11 @@
+; ModuleID = 'Test'
+
+define i32 @test() {
+entry:
+  ret i32 120
+}
+
+define i32 @main() {
+entry:
+  ret i32 0
+}

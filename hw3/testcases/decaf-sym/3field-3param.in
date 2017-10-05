@@ -1,0 +1,13 @@
+class C {
+    int x = 1;
+    int y = 1;
+    bool z = true;
+    int foo(int x, int y, bool z) {
+        x = 2;
+        y = 2;
+        z = false;
+    }
+    int main() {
+        foo(3,3,true);
+    }
+}

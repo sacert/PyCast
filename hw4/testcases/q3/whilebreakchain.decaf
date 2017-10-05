@@ -1,0 +1,30 @@
+extern void print_int(int);
+class Test {
+	int main() {
+		int x;
+		x = 0;
+		while (x < 10) {
+			print_int(x);
+			x = x + 1;
+			if (x == 5) {
+				break;
+			}
+		}
+		x = 0;
+		while (x < 100) {
+			print_int(x);
+			x = x + 1;
+			if (x % 2 == 1) {
+				break;
+			}
+		}
+		x = 0;
+		while (x < 5) {
+			print_int(x);
+			x = x + 1;
+			if (x == 3) {
+				break;
+			}
+		}
+	}
+}

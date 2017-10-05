@@ -1,0 +1,15 @@
+class Test {
+	bool x[10];
+	int main() {
+		x[0] = true;
+		x[1] = false;
+		x[2] = true;
+		x[3] = false;
+		x[4] = true;
+		x[5] = false;
+		x[6] = true;
+		x[7] = false;
+		x[8] = true;
+		x[9] = false;
+	}
+}

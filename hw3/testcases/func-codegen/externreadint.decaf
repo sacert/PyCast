@@ -1,0 +1,8 @@
+extern int read_int();
+
+class Test {
+	int main() {
+		int x;
+		x = 1;
+	}
+}

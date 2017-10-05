@@ -1,0 +1,14 @@
+extern void print_int(int);
+
+class Test {
+	void test2(bool a) {
+		print_int(a);
+	}
+	void test1(bool a) {
+		print_int(a);
+		test2(a);
+	}
+	int main() {
+		test1(true);
+	}
+}

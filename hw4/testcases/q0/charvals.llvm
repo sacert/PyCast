@@ -1,0 +1,21 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  call void @print_int(i32 97)
+  call void @print_int(i32 109)
+  call void @print_int(i32 122)
+  call void @print_int(i32 65)
+  call void @print_int(i32 77)
+  call void @print_int(i32 90)
+  call void @print_int(i32 48)
+  call void @print_int(i32 55)
+  call void @print_int(i32 57)
+  call void @print_int(i32 45)
+  call void @print_int(i32 125)
+  call void @print_int(i32 34)
+  call void @print_int(i32 94)
+  ret i32 0
+}

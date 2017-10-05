@@ -1,0 +1,11 @@
+; ModuleID = 'Test'
+
+@globalstring = private unnamed_addr constant [2 x i8] c"\22\00"
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring, i32 0, i32 0))
+  ret i32 0
+}

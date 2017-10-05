@@ -1,0 +1,10 @@
+extern int read_int();
+extern void print_int(int);
+
+class Test {
+	int main() {
+		int x;
+		x = read_int() * 100;
+		print_int(x);
+	}
+}

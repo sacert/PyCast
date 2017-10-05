@@ -1,0 +1,46 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  %y = alloca i32
+  store i32 0, i32* %x
+  store i32 9, i32* %y
+  br label %loop
+
+loop:                                             ; preds = %next, %entry
+  %x1 = load i32* %x
+  %lttmp = icmp slt i32 %x1, 10
+  br i1 %lttmp, label %noskct, label %skctend
+
+noskct:                                           ; preds = %loop
+  %y2 = load i32* %y
+  %geqtmp = icmp sge i32 %y2, 0
+  %andtmp = and i1 %lttmp, %geqtmp
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %loop
+  %phival = phi i1 [ %lttmp, %loop ], [ %andtmp, %noskct ]
+  br i1 %phival, label %body, label %end
+
+body:                                             ; preds = %skctend
+  %x3 = load i32* %x
+  call void @print_int(i32 %x3)
+  %y4 = load i32* %y
+  call void @print_int(i32 %y4)
+  br label %next
+
+next:                                             ; preds = %body
+  %x5 = load i32* %x
+  %addtmp = add i32 %x5, 1
+  store i32 %addtmp, i32* %x
+  %y6 = load i32* %y
+  %subtmp = sub i32 %y6, 1
+  store i32 %subtmp, i32* %y
+  br label %loop
+
+end:                                              ; preds = %skctend
+  ret i32 0
+}

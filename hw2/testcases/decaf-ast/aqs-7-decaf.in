@@ -1,0 +1,14 @@
+class QuickSort {
+	void quickSort(int left, int right) {
+	
+		if (right - left <= 0) {
+			return;
+		} else {
+			int pivot, part;
+			pivot = list[right];
+			part = partition(left, right, pivot);
+			quickSort(left, part - 1);
+			quickSort(part+1, right);
+		}	
+	}
+}

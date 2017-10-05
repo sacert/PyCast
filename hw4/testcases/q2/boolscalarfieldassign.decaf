@@ -1,0 +1,7 @@
+class Test {
+	bool x;
+	int main() {
+		x = true;
+		x = false;
+	}
+}

@@ -1,0 +1,19 @@
+extern void print_int(int);
+class Test {
+	int main()
+	{
+		print_int('a');
+		print_int('m');
+		print_int('z');
+		print_int('A');
+		print_int('M');
+		print_int('Z');
+		print_int('0');
+		print_int('7');
+		print_int('9');
+		print_int('-');
+		print_int('}');
+		print_int('"');
+		print_int('^');
+	}
+}

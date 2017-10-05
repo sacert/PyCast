@@ -1,0 +1,87 @@
+-- Decaf abstract syntax tree definition
+
+-- The specification of the AST nodes is specified using the Zephyr
+-- Abstract Syntax Definition Language (ASDL) [Wang97]
+
+-- The abstract syntax tree (AST) is a high-level representation
+-- of the program structure without the necessity of containing the
+-- source code; it can be thought of as an abstract representation of
+-- the source code.
+
+-- Modifiers on the argument type specify the number of values
+-- needed; '?' means it is optional, '*' means 0 or more, no modifier
+-- means only one value for the argument and it is required.
+
+-- For * it is print a singleton for one element, or multiple
+-- elements seperated by commas, or None for zero element
+
+-- ASDL's four builtin types are identifier, int, string, object
+
+module Decaf
+{
+    prog = Program(extern* extern_list, class body)
+
+    extern = ExternFunction(identifier name, method_type return_type, extern_type* typelist)
+
+    decaf_type = IntType | BoolType
+
+    method_type = VoidType | decaf_type
+
+    extern_type  = StringType | decaf_type
+
+    class = Class(identifier name, field_decl* field_list, method_decl* method_list)
+
+    field_decl = FieldDecl(identifier name, decaf_type type, field_size size)
+        | AssignGlobalVar(identifier name, decaf_type type, expr value)
+
+    field_size = Scalar | Array(int array_size)
+
+    method_decl = Method(identifier name, method_type return_type, typed_symbol* param_list, method_block block)
+
+    typed_symbol = VarDef(identifier name, decaf_type type)
+
+    method_block = MethodBlock(typed_symbol* var_decl_list, statement* statement_list)
+
+    block = Block(typed_symbol* var_decl_list, statement* statement_list)
+
+    statement = assign
+        | method_call
+        | IfStmt(expr condition, block if_block, block? else_block)
+        | WhileStmt(expr condition, block while_block)
+        | ForStmt(assign* pre_assign_list, expr condition, assign* loop_assign_list)
+        | ReturnStmt(expr? return_value)
+        | BreakStmt
+        | ContinueStmt
+
+    assign = AssignVar(identifier name, expr value)
+        | AssignArrayLoc(identifier name, expr index, expr value)
+
+    method_call = MethodCall(identifier name, method_arg* method_arg_list)
+
+    method_arg = StringConstant(string value)
+        | expr
+
+    expr = rvalue
+        | method_call
+        | NumberExpr(int value)
+        | BoolExpr(bool value)
+        | BinaryExpr(binary_operator op, expr left_value, expr right_value)
+        | UnaryExpr(unary_operator op, expr value)
+
+    rvalue = VariableExpr(identifier name)
+        | ArrayLocExpr(identifier name, expr index, expr value)
+
+    bool = True | False
+
+    binary_operator = Plus | Minus | Mult | Div | Leftshift | Rightshift | Mod | Lt | Gt | Leq | Geq | Eq | Neq | And | Or
+
+    unary_operator = UnaryMinus | Not
+
+}
+
+-- References
+
+-- [Wang97] Daniel C. Wang, Andrew W. Appel, Jeff L. Korn, and Chris
+-- S. Serra. The Zephyr Abstract Syntax Description Language. In
+-- Proceedings of the Conference on Domain-Specific Languages, pp.
+-- 213--227, 1997.

@@ -1,0 +1,263 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  %y = alloca i32
+  %z = alloca i32
+  store i32 0, i32* %x
+  br label %loop
+
+loop:                                             ; preds = %next, %entry
+  %x1 = load i32* %x
+  %lttmp = icmp slt i32 %x1, 100
+  br i1 %lttmp, label %body, label %end
+
+body:                                             ; preds = %loop
+  %x2 = load i32* %x
+  call void @print_int(i32 %x2)
+  store i32 0, i32* %y
+  br label %loop3
+
+next:                                             ; preds = %end26
+  %x27 = load i32* %x
+  %addtmp28 = add i32 %x27, 1
+  store i32 %addtmp28, i32* %x
+  br label %loop
+
+end:                                              ; preds = %iftrue25, %loop
+  store i32 0, i32* %x
+  br label %loop29
+
+loop3:                                            ; preds = %next7, %body
+  %y4 = load i32* %y
+  %lttmp5 = icmp slt i32 %y4, 2
+  br i1 %lttmp5, label %body6, label %end8
+
+body6:                                            ; preds = %loop3
+  %y9 = load i32* %y
+  call void @print_int(i32 %y9)
+  store i32 0, i32* %z
+  br label %loop10
+
+next7:                                            ; preds = %end15
+  %y20 = load i32* %y
+  %addtmp21 = add i32 %y20, 1
+  store i32 %addtmp21, i32* %y
+  br label %loop3
+
+end8:                                             ; preds = %loop3
+  br label %ifstart22
+
+loop10:                                           ; preds = %next14, %body6
+  %z11 = load i32* %z
+  %lttmp12 = icmp slt i32 %z11, 5
+  br i1 %lttmp12, label %body13, label %end15
+
+body13:                                           ; preds = %loop10
+  %z16 = load i32* %z
+  call void @print_int(i32 %z16)
+  br label %ifstart
+
+next14:                                           ; preds = %end18
+  %z19 = load i32* %z
+  %addtmp = add i32 %z19, 1
+  store i32 %addtmp, i32* %z
+  br label %loop10
+
+end15:                                            ; preds = %iftrue, %loop10
+  br label %next7
+
+ifstart:                                          ; preds = %body13
+  %z17 = load i32* %z
+  %eqtmp = icmp eq i32 %z17, 3
+  br i1 %eqtmp, label %iftrue, label %end18
+
+iftrue:                                           ; preds = %ifstart
+  br label %end15
+  br label %end18
+
+end18:                                            ; preds = %iftrue, %ifstart
+  br label %next14
+
+ifstart22:                                        ; preds = %end8
+  %x23 = load i32* %x
+  %eqtmp24 = icmp eq i32 %x23, 5
+  br i1 %eqtmp24, label %iftrue25, label %end26
+
+iftrue25:                                         ; preds = %ifstart22
+  br label %end
+  br label %end26
+
+end26:                                            ; preds = %iftrue25, %ifstart22
+  br label %next
+
+loop29:                                           ; preds = %next33, %end
+  %x30 = load i32* %x
+  %lttmp31 = icmp slt i32 %x30, 100
+  br i1 %lttmp31, label %body32, label %end34
+
+body32:                                           ; preds = %loop29
+  %x35 = load i32* %x
+  call void @print_int(i32 %x35)
+  store i32 0, i32* %y
+  br label %loop36
+
+next33:                                           ; preds = %end63
+  %x64 = load i32* %x
+  %addtmp65 = add i32 %x64, 1
+  store i32 %addtmp65, i32* %x
+  br label %loop29
+
+end34:                                            ; preds = %iftrue62, %loop29
+  store i32 0, i32* %x
+  br label %loop66
+
+loop36:                                           ; preds = %next40, %body32
+  %y37 = load i32* %y
+  %lttmp38 = icmp slt i32 %y37, 0
+  br i1 %lttmp38, label %body39, label %end41
+
+body39:                                           ; preds = %loop36
+  %y42 = load i32* %y
+  call void @print_int(i32 %y42)
+  store i32 0, i32* %z
+  br label %loop43
+
+next40:                                           ; preds = %end48
+  %y57 = load i32* %y
+  %addtmp58 = add i32 %y57, 1
+  store i32 %addtmp58, i32* %y
+  br label %loop36
+
+end41:                                            ; preds = %loop36
+  br label %ifstart59
+
+loop43:                                           ; preds = %next47, %body39
+  %z44 = load i32* %z
+  %lttmp45 = icmp slt i32 %z44, 5
+  br i1 %lttmp45, label %body46, label %end48
+
+body46:                                           ; preds = %loop43
+  %z49 = load i32* %z
+  call void @print_int(i32 %z49)
+  br label %ifstart50
+
+next47:                                           ; preds = %end54
+  %z55 = load i32* %z
+  %addtmp56 = add i32 %z55, 1
+  store i32 %addtmp56, i32* %z
+  br label %loop43
+
+end48:                                            ; preds = %iftrue53, %loop43
+  br label %next40
+
+ifstart50:                                        ; preds = %body46
+  %z51 = load i32* %z
+  %eqtmp52 = icmp eq i32 %z51, 3
+  br i1 %eqtmp52, label %iftrue53, label %end54
+
+iftrue53:                                         ; preds = %ifstart50
+  br label %end48
+  br label %end54
+
+end54:                                            ; preds = %iftrue53, %ifstart50
+  br label %next47
+
+ifstart59:                                        ; preds = %end41
+  %x60 = load i32* %x
+  %eqtmp61 = icmp eq i32 %x60, 1
+  br i1 %eqtmp61, label %iftrue62, label %end63
+
+iftrue62:                                         ; preds = %ifstart59
+  br label %end34
+  br label %end63
+
+end63:                                            ; preds = %iftrue62, %ifstart59
+  br label %next33
+
+loop66:                                           ; preds = %next70, %end34
+  %x67 = load i32* %x
+  %lttmp68 = icmp slt i32 %x67, 100
+  br i1 %lttmp68, label %body69, label %end71
+
+body69:                                           ; preds = %loop66
+  %x72 = load i32* %x
+  call void @print_int(i32 %x72)
+  store i32 0, i32* %y
+  br label %loop73
+
+next70:                                           ; preds = %end100
+  %x101 = load i32* %x
+  %addtmp102 = add i32 %x101, 1
+  store i32 %addtmp102, i32* %x
+  br label %loop66
+
+end71:                                            ; preds = %iftrue99, %loop66
+  ret i32 0
+
+loop73:                                           ; preds = %next77, %body69
+  %y74 = load i32* %y
+  %lttmp75 = icmp slt i32 %y74, 1
+  br i1 %lttmp75, label %body76, label %end78
+
+body76:                                           ; preds = %loop73
+  %y79 = load i32* %y
+  call void @print_int(i32 %y79)
+  store i32 0, i32* %z
+  br label %loop80
+
+next77:                                           ; preds = %end85
+  %y94 = load i32* %y
+  %addtmp95 = add i32 %y94, 1
+  store i32 %addtmp95, i32* %y
+  br label %loop73
+
+end78:                                            ; preds = %loop73
+  br label %ifstart96
+
+loop80:                                           ; preds = %next84, %body76
+  %z81 = load i32* %z
+  %lttmp82 = icmp slt i32 %z81, 5
+  br i1 %lttmp82, label %body83, label %end85
+
+body83:                                           ; preds = %loop80
+  %z86 = load i32* %z
+  call void @print_int(i32 %z86)
+  br label %ifstart87
+
+next84:                                           ; preds = %end91
+  %z92 = load i32* %z
+  %addtmp93 = add i32 %z92, 1
+  store i32 %addtmp93, i32* %z
+  br label %loop80
+
+end85:                                            ; preds = %iftrue90, %loop80
+  br label %next77
+
+ifstart87:                                        ; preds = %body83
+  %z88 = load i32* %z
+  %eqtmp89 = icmp eq i32 %z88, 4
+  br i1 %eqtmp89, label %iftrue90, label %end91
+
+iftrue90:                                         ; preds = %ifstart87
+  br label %end85
+  br label %end91
+
+end91:                                            ; preds = %iftrue90, %ifstart87
+  br label %next84
+
+ifstart96:                                        ; preds = %end78
+  %x97 = load i32* %x
+  %eqtmp98 = icmp eq i32 %x97, 2
+  br i1 %eqtmp98, label %iftrue99, label %end100
+
+iftrue99:                                         ; preds = %ifstart96
+  br label %end71
+  br label %end100
+
+end100:                                           ; preds = %iftrue99, %ifstart96
+  br label %next70
+}

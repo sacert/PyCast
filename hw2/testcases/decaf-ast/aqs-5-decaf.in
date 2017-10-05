@@ -1,0 +1,8 @@
+class QuickSort {
+	void initList(int size) {
+		int i;
+		for (i = 0; i < size; i = i + 1) {
+			list[i] = (i * 2382983) % 100;
+		}
+	}
+}

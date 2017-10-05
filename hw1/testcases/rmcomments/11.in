@@ -1,0 +1,9 @@
+
+#include <stdio.h>
+
+int main (/* no arguments here ) {
+  /* a single line / comment */
+  printf("hello, /* world */\n");
+  return 1;
+}
+

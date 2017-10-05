@@ -1,0 +1,7 @@
+class QuickSort {
+	int x;
+
+	void main(int a, int b)
+	{
+	}
+}

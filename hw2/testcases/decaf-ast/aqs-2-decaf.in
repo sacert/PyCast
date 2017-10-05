@@ -1,0 +1,7 @@
+class QuickSort {
+	int list[100];
+
+	void main()
+	{
+	}
+}

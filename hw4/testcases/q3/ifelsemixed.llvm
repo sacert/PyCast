@@ -1,0 +1,186 @@
+; ModuleID = 'Test'
+
+@globalstring = private unnamed_addr constant [2 x i8] c"a\00"
+@globalstring1 = private unnamed_addr constant [2 x i8] c"b\00"
+@globalstring2 = private unnamed_addr constant [2 x i8] c"c\00"
+@globalstring3 = private unnamed_addr constant [2 x i8] c"d\00"
+@globalstring4 = private unnamed_addr constant [2 x i8] c"e\00"
+@globalstring5 = private unnamed_addr constant [2 x i8] c"f\00"
+@globalstring6 = private unnamed_addr constant [2 x i8] c"g\00"
+@globalstring7 = private unnamed_addr constant [2 x i8] c"h\00"
+@globalstring8 = private unnamed_addr constant [2 x i8] c"i\00"
+@globalstring9 = private unnamed_addr constant [2 x i8] c"j\00"
+@globalstring10 = private unnamed_addr constant [2 x i8] c"k\00"
+@globalstring11 = private unnamed_addr constant [2 x i8] c"l\00"
+@globalstring12 = private unnamed_addr constant [2 x i8] c"m\00"
+@globalstring13 = private unnamed_addr constant [2 x i8] c"n\00"
+@globalstring14 = private unnamed_addr constant [2 x i8] c"o\00"
+@globalstring15 = private unnamed_addr constant [2 x i8] c"p\00"
+@globalstring16 = private unnamed_addr constant [2 x i8] c"q\00"
+@globalstring17 = private unnamed_addr constant [2 x i8] c"r\00"
+@globalstring18 = private unnamed_addr constant [2 x i8] c"s\00"
+@globalstring19 = private unnamed_addr constant [2 x i8] c"t\00"
+
+declare void @print_string(i8*)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring, i32 0, i32 0))
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 true, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring1, i32 0, i32 0))
+  br label %ifstart1
+
+end:                                              ; preds = %iffalse, %end3
+  br label %ifstart14
+
+iffalse:                                          ; preds = %ifstart
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring7, i32 0, i32 0))
+  br label %end
+
+ifstart1:                                         ; preds = %iftrue
+  br i1 true, label %iftrue2, label %end3
+
+iftrue2:                                          ; preds = %ifstart1
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring2, i32 0, i32 0))
+  br label %ifstart4
+
+end3:                                             ; preds = %end6, %ifstart1
+  br label %end
+
+ifstart4:                                         ; preds = %iftrue2
+  br i1 true, label %iftrue5, label %iffalse7
+
+iftrue5:                                          ; preds = %ifstart4
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring3, i32 0, i32 0))
+  br label %ifstart8
+
+end6:                                             ; preds = %iffalse7, %end13
+  br label %end3
+
+iffalse7:                                         ; preds = %ifstart4
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring6, i32 0, i32 0))
+  br label %end6
+
+ifstart8:                                         ; preds = %iftrue5
+  br i1 false, label %iftrue9, label %end10
+
+iftrue9:                                          ; preds = %ifstart8
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring4, i32 0, i32 0))
+  br label %end10
+
+end10:                                            ; preds = %iftrue9, %ifstart8
+  br label %ifstart11
+
+ifstart11:                                        ; preds = %end10
+  br i1 true, label %iftrue12, label %end13
+
+iftrue12:                                         ; preds = %ifstart11
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring5, i32 0, i32 0))
+  br label %end13
+
+end13:                                            ; preds = %iftrue12, %ifstart11
+  br label %end6
+
+ifstart14:                                        ; preds = %end
+  br i1 false, label %iftrue15, label %end16
+
+iftrue15:                                         ; preds = %ifstart14
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring8, i32 0, i32 0))
+  br label %end16
+
+end16:                                            ; preds = %iftrue15, %ifstart14
+  br label %ifstart17
+
+ifstart17:                                        ; preds = %end16
+  br i1 true, label %iftrue18, label %iffalse20
+
+iftrue18:                                         ; preds = %ifstart17
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring9, i32 0, i32 0))
+  br label %ifstart21
+
+end19:                                            ; preds = %iffalse20, %end36
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring19, i32 0, i32 0))
+  ret i32 0
+
+iffalse20:                                        ; preds = %ifstart17
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring18, i32 0, i32 0))
+  br label %end19
+
+ifstart21:                                        ; preds = %iftrue18
+  br i1 false, label %iftrue22, label %end23
+
+iftrue22:                                         ; preds = %ifstart21
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring10, i32 0, i32 0))
+  br label %ifstart24
+
+end23:                                            ; preds = %end26, %ifstart21
+  br label %ifstart34
+
+ifstart24:                                        ; preds = %iftrue22
+  br i1 true, label %iftrue25, label %iffalse27
+
+iftrue25:                                         ; preds = %ifstart24
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring11, i32 0, i32 0))
+  br label %ifstart28
+
+end26:                                            ; preds = %iffalse27, %end33
+  br label %end23
+
+iffalse27:                                        ; preds = %ifstart24
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring14, i32 0, i32 0))
+  br label %end26
+
+ifstart28:                                        ; preds = %iftrue25
+  br i1 false, label %iftrue29, label %end30
+
+iftrue29:                                         ; preds = %ifstart28
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring12, i32 0, i32 0))
+  br label %end30
+
+end30:                                            ; preds = %iftrue29, %ifstart28
+  br label %ifstart31
+
+ifstart31:                                        ; preds = %end30
+  br i1 true, label %iftrue32, label %end33
+
+iftrue32:                                         ; preds = %ifstart31
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring13, i32 0, i32 0))
+  br label %end33
+
+end33:                                            ; preds = %iftrue32, %ifstart31
+  br label %end26
+
+ifstart34:                                        ; preds = %end23
+  br i1 true, label %iftrue35, label %iffalse37
+
+iftrue35:                                         ; preds = %ifstart34
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring15, i32 0, i32 0))
+  br label %end36
+
+end36:                                            ; preds = %end40, %iftrue35
+  br label %end19
+
+iffalse37:                                        ; preds = %ifstart34
+  br label %ifstart38
+
+ifstart38:                                        ; preds = %iffalse37
+  br i1 true, label %iftrue39, label %iffalse41
+
+iftrue39:                                         ; preds = %ifstart38
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring16, i32 0, i32 0))
+  br label %end40
+
+end40:                                            ; preds = %iffalse41, %iftrue39
+  br label %end36
+
+iffalse41:                                        ; preds = %ifstart38
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring17, i32 0, i32 0))
+  br label %end40
+}

@@ -1,0 +1,9 @@
+
+#include <stdio.h>
+
+/* simple comment */
+
+int main () {
+  return 1;
+}
+

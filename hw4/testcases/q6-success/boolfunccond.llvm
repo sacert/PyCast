@@ -1,0 +1,24 @@
+; ModuleID = 'C'
+
+declare void @print_int(i32)
+
+define i1 @foo() {
+entry:
+  ret i1 true
+}
+
+define i32 @main() {
+entry:
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %calltmp = call i1 @foo()
+  br i1 %calltmp, label %iftrue, label %end
+
+iftrue:                                           ; preds = %ifstart
+  call void @print_int(i32 1)
+  br label %end
+
+end:                                              ; preds = %iftrue, %ifstart
+  ret i32 0
+}

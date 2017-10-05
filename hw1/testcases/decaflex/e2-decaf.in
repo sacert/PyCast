@@ -1,0 +1,13 @@
+
+extern int print_string(string);
+
+class Error2 {
+
+    void main() {
+       int z;
+       z = 10;
+
+       // print_string is part of the standard input-output library
+       print_string(""");
+    }
+}

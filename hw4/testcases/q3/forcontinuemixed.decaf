@@ -1,0 +1,62 @@
+extern void print_int(int);
+class Test {
+	int main() {
+		int x;
+		int y;
+		int z;
+		for(x = 0; x < 4; x = x + 1) {
+			if (x % 2 == 0) {
+				continue;
+			}
+			print_int(x);
+			for(y = 0; y < 2; y = y + 1) {
+				if (y % 2 == 0) {
+					continue;
+				}
+				print_int(y);
+				for(z = 0; z < 10; z = z + 1) {
+					if (z % 2 == 1) {
+						continue;
+					}
+					print_int(z);
+				}
+			}
+		}
+		for(x = 0; x < 0; x = x + 1) {
+			if (x % 2 == 0) {
+				continue;
+			}
+			print_int(x);
+			for(y = 0; y < 2; y = y + 1) {
+				if (y % 2 == 0) {
+					continue;
+				}
+				print_int(y);
+				for(z = 0; z < 10; z = z + 1) {
+					if (z % 2 == 1) {
+						continue;
+					}
+					print_int(z);
+				}
+			}
+		}
+		for(x = 0; x < 7; x = x + 1) {
+			if (x % 2 == 0) {
+				continue;
+			}
+			print_int(x);
+			for(y = 0; y < 3; y = y + 1) {
+				if (y % 2 == 0) {
+					continue;
+				}
+				print_int(y);
+				for(z = 0; z < 5; z = z + 1) {
+					if (z % 2 == 1) {
+						continue;
+					}
+					print_int(z);
+				}
+			}
+		}
+	}
+}

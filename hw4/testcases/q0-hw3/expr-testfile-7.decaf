@@ -1,0 +1,14 @@
+extern void print_int(int);
+class Test {
+	int main()
+	{ int x;
+	  bool y;
+	x = 2+2*3+5+(43*23-44);
+	{ int y;
+	y = x * -30 + 40 * 2;
+	x = -y;
+	}
+	y = !true;
+	print_int(x);
+	}
+}

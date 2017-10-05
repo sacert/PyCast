@@ -1,0 +1,8 @@
+class Test {
+	bool x[3];
+	int main() {
+		x[0] = true;
+		x[1] = false;
+		x[2] = true;
+	}
+}

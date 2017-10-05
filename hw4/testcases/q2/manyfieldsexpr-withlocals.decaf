@@ -1,0 +1,32 @@
+extern void print_int(int);
+class Test {
+	int w;
+	bool x;
+	int y[10];
+	bool z[10];
+	int main() {
+		int a;
+		bool b;
+		a = 123;
+		b = true;
+		w = 1;
+		x = b;
+		y[w] = a;
+		z[w] = x;
+		a = 456;
+		b = false;
+		w = 2;
+		x = b;
+		y[w] = a;
+		z[w] = x;
+		w = 1;
+		print_int(y[w] + y[2]);
+		print_int(z[1]);
+		print_int(z[2]);
+		print_int(z[1] || z[2]);
+		a = w;
+		b = z[2];
+		print_int(a);
+		print_int(b);
+	}
+}

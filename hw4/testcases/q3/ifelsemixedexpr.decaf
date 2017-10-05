@@ -1,0 +1,63 @@
+extern void print_string(string);
+class Test {
+	int main() {
+		int x;
+		bool b;
+		x = 0;
+		b = true;
+		print_string("a");
+		if (true || false) {
+			print_string("b");
+			if (x == 0) {
+				print_string("c");
+				if (b) {
+					print_string("d");
+					if (false && true) {
+						print_string("e");
+					}
+					if (true) {
+						print_string("f");
+						b = false;
+					}
+				} else {
+					print_string("g");
+				}
+			}
+		} else {
+			print_string("h");
+		}
+		if (b || false) {
+			print_string("i");
+		}
+		if (!b) {
+			print_string("j");
+			if (false) {
+				print_string("k");
+				if (true) {
+					print_string("l");
+					if (false) {
+						print_string("m");
+					}
+					if (true) {
+						print_string("n");
+					}
+				} else {
+					print_string("o");
+				}
+			}
+			if (false || true) {
+				print_string("p");
+				b = !b;
+			} else {
+				if (b || x == 10) {
+					print_string("q");
+				} else {
+					print_string("r");
+				}
+			}
+		} else {
+			print_string("s");
+		}
+		print_string("t");
+	}
+}

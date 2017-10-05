@@ -1,0 +1,30 @@
+; ModuleID = 'Test'
+
+@globalstring = private unnamed_addr constant [2 x i8] c"a\00"
+@globalstring1 = private unnamed_addr constant [2 x i8] c"b\00"
+@globalstring2 = private unnamed_addr constant [2 x i8] c"x\00"
+@globalstring3 = private unnamed_addr constant [2 x i8] c"y\00"
+
+declare void @print_int(i32)
+
+declare void @print_string(i8*)
+
+define i32 @test() {
+entry:
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring, i32 0, i32 0))
+  ret i32 123
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring1, i32 0, i32 0))
+  ret i32 0
+}
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring2, i32 0, i32 0))
+  %calltmp = call i32 @test()
+  store i32 %calltmp, i32* %x
+  call void @print_string(i8* getelementptr inbounds ([2 x i8]* @globalstring3, i32 0, i32 0))
+  %x1 = load i32* %x
+  call void @print_int(i32 %x1)
+  ret i32 0
+}

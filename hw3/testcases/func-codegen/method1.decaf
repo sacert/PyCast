@@ -1,0 +1,12 @@
+extern void print_int(int);
+
+class Test {
+	void test(int a) {
+		int x;
+		x = 1;
+	}
+	int main() {
+		int x;
+		x = 1;
+	}
+}

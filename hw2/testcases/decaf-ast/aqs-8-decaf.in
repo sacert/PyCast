@@ -1,0 +1,13 @@
+class QuickSort {
+	void main() {
+		int size;
+		size = 100;
+		initList(size);
+
+		displayList(0,size);
+		quickSort(0,size-1);
+
+		print_string("After sorting:\n");
+		displayList(0,size);
+	}
+}

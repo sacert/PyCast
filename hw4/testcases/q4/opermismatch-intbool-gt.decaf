@@ -1,0 +1,8 @@
+extern void print_int(int);
+class Test {
+	int main() {
+		int x;
+		bool y;
+		print_int(x > y);
+	}
+}

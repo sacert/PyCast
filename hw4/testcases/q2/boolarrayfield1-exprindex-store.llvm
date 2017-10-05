@@ -1,0 +1,15 @@
+; ModuleID = 'Test'
+
+@x = global [1 x i1] zeroinitializer
+
+define i32 @main() {
+entry:
+  %y = alloca i1
+  %z = alloca i32
+  store i32 1, i32* %z
+  %z1 = load i32* %z
+  %subtmp = sub i32 %z1, 1
+  %tmp = getelementptr i1* getelementptr inbounds ([1 x i1]* @x, i32 0, i32 0), i32 %subtmp
+  store i1 false, i1* %tmp
+  ret i32 0
+}

@@ -1,0 +1,165 @@
+#!/usr/bin/env python
+
+"""
+usage: %s [-c CODEGEN] [-l STDLIB] SOURCE-FILE [LOG-DIR [GROUP TESTCASE]]
+
+SOURCE-FILE  the source code input file
+LOG-DIR     an optional directory to put output in
+GROUP       an optional group name for organizing the output files
+TESTCASE    an optional testcase name for organizing the output files
+
+Options
+-c CODEGEN    path to compiler codegen executable
+-l STDLIB     path to stdlib C file
+
+Output files are as follows:
+PREFIX.STAGE      main result from STAGE
+PREFIX.STAGE.out  standard output from STAGE
+PREFIX.STATE.err  standard error from STAGE
+PREFIX.STAGE.ret  exist status from STAGE
+
+Stages are:
+llvm  source code to LLVM code generation
+bc    assembly to LLVM bitcode
+s     bitcode to native code
+exec  linking to make native executable
+run   running the final executable
+
+Prefix is determined by which arguments are given:
+SOURCE-FILE                          PREFIX is ./NAME
+SOURCE-FILE LOG-FILE                 PREFIX is LOG-FILE/NAME
+SOURCE-FILE LOG-FILE GROUP TESTCASE  PREFIX is LOG-FILE/GROUP/TESTCASE
+
+NAME is the basename of SOURCE-FILE if SOURCE-FILE has the extension %s, and
+otherwise is a unique name generated to avoid conflicting with existing files.
+
+Environment variables:
+LLVMCONFIG    LLVM config binary, defaults to llvm-config
+LLVMAS        LLVM assembler, defaults to llvm-as
+LLC           LLVM native code compiler, defaults to llc
+CC            C compiler for linking, defaults to gcc
+CODEGEN       default for the source code to LLVM code compiler, defaults to %s
+STDLIB        default for the stdlib C file, defaults to %s
+"""
+
+import subprocess
+import sys
+import os
+import os.path
+import shutil
+import shlex
+import tempfile
+
+gen_name_prefix = "llvm-run" # filename prefix to use if we have to make up a name for output
+source_extension = ".decaf"
+default_codegen = "./decaf-codegen"
+default_stdlib = "decaf-stdlib.c"
+codegen_llvm_out_source = "err"
+codegen_env_var = "CODEGEN"
+stdlib_env_var = "STDLIB"
+
+llvm_config = os.environ.get('LLVMCONFIG') or 'llvm-config'
+llc_call = subprocess.check_output([llvm_config, "--bindir"]).strip() + '/llc -disable-cfi'
+llvmas = os.environ.get('LLVMAS') or 'llvm-as'
+llc = os.environ.get('LCC') or llc_call
+cc = os.environ.get('CC') or 'gcc'
+codegen = os.environ.get(codegen_env_var) or os.path.join('.', default_codegen)
+stdlib = os.environ.get(stdlib_env_var) or default_stdlib
+
+def touch(fname, times=None):
+    with open(fname, 'a'):
+        os.utime(fname, times)
+
+def printfile(fname, ostream):
+    try:
+    	with open(fname, 'r') as istream:
+            for line in istream:
+    		    ostream.write(line)
+    except IOError:
+    	print >>sys.stderr, 'could not read', fname, 'and print to', ostream
+
+def run(msg, cmd, suffix, inpath, out_prefix):
+    outpath = out_prefix + suffix
+    print >>sys.stderr, msg + ':' + cmd + ' ...',
+    try:
+        infile = open(inpath, 'r') if inpath is not None else None
+        outoutfile = open(outpath + '.out', 'w')
+        outerrfile = open(outpath + '.err', 'w')
+        retval = subprocess.call(shlex.split(cmd), stdin=infile, stdout=outoutfile, stderr=outerrfile)
+    finally:
+        if infile is not None:
+            infile.close()
+        outoutfile.close()
+        outerrfile.close()
+    if retval == 0: 
+    	print >>sys.stderr, 'ok'
+    else:
+    	print >>sys.stderr, "failed (%d)" % (retval)
+    with open(outpath + '.ret', 'w') as ostream:
+    	ostream.write("%d\n" % (retval))
+    printfile(outpath + '.out', sys.stdout)
+    printfile(outpath + '.err', sys.stderr)
+    return retval == 0
+
+def name_for_source_file(source_file_path, dir):
+    basename = os.path.basename(source_file_path)
+    if basename.endswith(source_extension):
+        return os.path.join(dir, basename[:-len(source_extension)])
+    else:
+        file, path = tempfile.mkstemp(dir=dir, prefix=gen_name_prefix + ".", suffix="")
+        os.close(file)
+        return path
+
+if __name__ == '__main__':
+    import getopt
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "c:l:")
+        for opt, value in opts:
+            if opt == "-c":
+                codegen = value
+            elif opt == "-l":
+                stdlib = value
+        if len(args) not in [1, 2, 4]:
+            raise getopt.GetoptError("Not enough arguments.")
+    except getopt.GetoptError, e:
+        print >>sys.stderr, __doc__ % (sys.argv[0], source_extension, default_codegen, default_stdlib)
+        sys.exit(2)
+
+    source_file = args[0]
+    if len(args) == 1:
+        out_prefix = name_for_source_file(source_file, ".")
+    else:
+      log_dir = args[1]
+      if not os.path.exists(log_dir):
+          os.makedirs(log_dir)
+      if len(args) == 2:
+          out_prefix = name_for_source_file(source_file, log_dir)
+      elif len(args) == 4:
+          group = args[2]
+          testcase = args[3]
+          out_prefix = os.path.join(log_dir, group, testcase)
+
+    print >>sys.stderr, "output prefix: %s" % (out_prefix)
+    print >>sys.stderr, "llvmas: %s" % (llvmas)
+    print >>sys.stderr, "llc: %s" % (llc)
+    print >>sys.stderr, "cc: %s" % (cc)
+    print >>sys.stderr, "codegen: %s" % (codegen)
+    print >>sys.stderr, "stdlib: %s" % (stdlib)
+
+    dir = os.path.dirname(out_prefix)
+    if not os.path.exists(dir):
+        os.makedirs(dir)
+
+    if run("generating llvm code", codegen, ".llvm", source_file, out_prefix):
+        shutil.copy2("%s.llvm.%s" % (out_prefix, codegen_llvm_out_source), "%s.llvm" % (out_prefix))
+        run("assembling to bitcode", "%s \"%s.llvm\" -o \"%s.llvm.bc\"" % (llvmas, out_prefix, out_prefix), ".llvm.bc", None, out_prefix)
+        run("converting to native code", "%s \"%s.llvm.bc\" -o \"%s.llvm.s\"" % (llc, out_prefix, out_prefix), ".llvm.s", None, out_prefix)
+        run("linking", "%s -o \"%s.llvm.exec\" \"%s.llvm.s\" \"%s\"" % (cc, out_prefix, out_prefix, stdlib), ".exec", None, out_prefix)
+        run("running", "%s.llvm.exec" % (out_prefix), ".run", None, out_prefix)
+    else:
+        # if codegen failed, leave blank files for the check
+        touch("%s.llvm.ret" % (out_prefix))
+        touch("%s.run.out" % (out_prefix))
+
+    sys.exit(0)

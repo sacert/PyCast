@@ -1,0 +1,13 @@
+class QuickSort {
+	void displayList(int start, int len) {
+		int j;
+		print_string("List:\n");
+		for (j = start; j < start + len; j = j + 1) {
+			print_int(list[j]);
+			print_string(" ");
+			if ((j - start + 1) % 20 == 0 || j + 1 == start + len) {
+				cr();
+			}
+		}
+	}
+}

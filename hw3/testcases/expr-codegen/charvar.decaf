@@ -1,0 +1,7 @@
+class Test {
+	int main()
+	{
+		int x;
+		x = 'a';
+	}
+}

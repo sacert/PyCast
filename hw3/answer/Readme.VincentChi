@@ -1,0 +1,9 @@
+Tasks I've completed:
+
+question 2:
+1) fixed bugs in symbolTable.cc.
+2) integrated symbol table in bison file to printout variable usages.
+
+question 8:
+1) helped debug codegen for parts of expr-codegen testcases
+2) integrated symbol table for codegen

@@ -1,0 +1,35 @@
+extern void print_int(int);
+class Test {
+	int main() {
+		int x;
+		int y;
+		int z;
+		for(x = 0; x < 3; x = x + 1) {
+			print_int(x);
+			for(y = 7; y < 9; y = y + 1) {
+				print_int(y);
+				for(z = 0; z < 2; z = z + 1) {
+					print_int(z);
+				}
+			}
+		}
+		for(x = 0; x < 0; x = x + 1) {
+			print_int(x);
+			for(y = 0; y < 10; y = y + 1) {
+				print_int(y);
+			}
+		}
+		for(x = 0; x < 2; x = x + 1) {
+			print_int(x);
+			for(y = 3; y < 6; y = y + 1) {
+				print_int(y);
+				for(z = 0; z < 2; z = z + 1) {
+					print_int(z);
+				}
+			}
+			for(z = 0; z < 2; z = z + 1) {
+				print_int(z);
+			}
+		}
+	}
+}

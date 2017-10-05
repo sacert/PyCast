@@ -1,0 +1,35 @@
+extern void print_int(int);
+class Test {
+	int main() {
+		int x;
+		int y;
+		int z;
+		x = 0;
+		while (x < 5) {
+			if (x % 2 == 0) {
+				x = x + 1;
+				continue;
+			}
+			print_int(x);
+			y = 0;
+			while (y < 2) {
+				if (y % 2 == 0) {
+					y = y + 1;
+					continue;
+				}
+				print_int(y);
+				z = 0;
+				while (z < 10) {
+					if (z % 2 == 1) {
+						z = z + 1;
+						continue;
+					}
+					print_int(z);
+					z = z + 1;
+				}
+				y = y + 1;
+			}
+			x = x + 1;
+		}
+	}
+}

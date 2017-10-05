@@ -1,0 +1,10 @@
+; ModuleID = 'Test'
+
+@x = global i1 false
+
+define i32 @main() {
+entry:
+  store i1 true, i1* @x
+  store i1 false, i1* @x
+  ret i32 0
+}

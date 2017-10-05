@@ -1,0 +1,16 @@
+extern void print_string(string);
+extern void print_int(int);
+class Test {
+	int test() {
+		print_string("a");
+		return (100 + 23);
+		print_string("b");
+	}
+	int main() {
+		int x;
+		print_string("x");
+		x = test();
+		print_string("y");
+		print_int(x);
+	}
+}

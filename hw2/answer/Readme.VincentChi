@@ -1,0 +1,5 @@
+Tasks I’ve completed:
+
+1) debugged quicksort.decaf
+2) helped write decaf-ast.cc (tree structure for decaf-ast)
+3) helped write decaf-ast.y (only helped with grammer definiton, not with the abstract syntax tree creation)

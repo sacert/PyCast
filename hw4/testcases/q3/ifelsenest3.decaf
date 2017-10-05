@@ -1,0 +1,24 @@
+extern void print_string(string);
+class Test {
+	int main() {
+		int x;
+		x = 0;
+		print_string("a");
+		if (true) {
+			print_string("b");
+			if (false) {
+				print_string("d");
+			} else {
+				print_string("e");
+				if (true) {
+					print_string("f");
+				} else {
+					print_string("g");
+				}
+			}
+		} else {
+			print_string("c");
+		}
+		print_string("h");
+	}
+}

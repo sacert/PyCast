@@ -1,0 +1,19 @@
+class C {
+    int main() {
+        int x, y; 
+        { 
+            int p, q; 
+            { 
+                int y; 
+                x = 1; 
+                y = 1;
+                { 
+                    int x; 
+                    p = 1; 
+                    x = 1; 
+                    y = 1;
+                } 
+            } 
+        }
+    }
+}

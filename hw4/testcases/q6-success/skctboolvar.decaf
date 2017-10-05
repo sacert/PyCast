@@ -1,0 +1,17 @@
+
+class C {
+
+  bool rettrue() { return(true); }
+  bool retfalse() { return(false); }
+  int main () {
+    bool x;
+    x = rettrue() || false;
+    x = rettrue() || true;
+    x = retfalse() || false;
+    x = retfalse() || true;
+    x = rettrue() && false;
+    x = rettrue() && true;
+    x = retfalse() && false;
+    x = retfalse() && true;
+  }
+}

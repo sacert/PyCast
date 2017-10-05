@@ -1,0 +1,13 @@
+
+#include <stdio.h>
+
+// COMMENT
+/*/s/t/r/e/s/*s/**t//e/s/t**/
+/*/s/t/r/e/s/*s/
+ **t//e/s/t
+ **/
+
+int main () {
+  return 1;
+}
+

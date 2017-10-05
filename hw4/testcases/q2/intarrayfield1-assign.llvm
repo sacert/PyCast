@@ -1,0 +1,9 @@
+; ModuleID = 'Test'
+
+@x = global [1 x i32] zeroinitializer
+
+define i32 @main() {
+entry:
+  store i32 10, i32* getelementptr inbounds ([1 x i32]* @x, i32 0, i32 0)
+  ret i32 0
+}

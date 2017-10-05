@@ -1,0 +1,27 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i1
+  %y = alloca i1
+  %z = alloca i1
+  store i1 true, i1* %x
+  store i1 true, i1* %y
+  %x1 = load i1* %x
+  br i1 %x1, label %noskct, label %skctend
+
+noskct:                                           ; preds = %entry
+  %y2 = load i1* %y
+  %andtmp = and i1 %x1, %y2
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ %x1, %entry ], [ %andtmp, %noskct ]
+  store i1 %phival, i1* %z
+  %z3 = load i1* %z
+  %zexttmp = zext i1 %z3 to i32
+  call void @print_int(i32 %zexttmp)
+  ret i32 0
+}

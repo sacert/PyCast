@@ -1,0 +1,9 @@
+extern void print_int(int);
+class Test {
+	int x;
+	int main() {
+		x = 1;
+		x = x + 100;
+		print_int(x - 50);
+	}
+}

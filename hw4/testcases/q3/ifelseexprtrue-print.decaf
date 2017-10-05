@@ -1,0 +1,13 @@
+extern void print_int(int);
+class Test {
+	int main() {
+		int x;
+		x = 0;
+		if (x == 1 || true) {
+			x = 1;
+		} else {
+			x = 2;
+		}
+		print_int(x);
+	}
+}

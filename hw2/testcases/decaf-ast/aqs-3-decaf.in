@@ -1,0 +1,3 @@
+class QuickSort {
+	void cr() { print_string("\n"); }
+}

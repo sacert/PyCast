@@ -1,0 +1,75 @@
+; ModuleID = 'Test'
+
+@w = global i32 0
+@x = global i1 false
+@y = global [10 x i32] zeroinitializer
+@z = global [10 x i1] zeroinitializer
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %a = alloca i32
+  %b = alloca i1
+  store i32 123, i32* %a
+  store i1 true, i1* %b
+  store i32 1, i32* @w
+  %b1 = load i1* %b
+  store i1 %b1, i1* @x
+  %w = load i32* @w
+  %tmp = getelementptr i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 0), i32 %w
+  %a2 = load i32* %a
+  store i32 %a2, i32* %tmp
+  %w3 = load i32* @w
+  %tmp4 = getelementptr i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 0), i32 %w3
+  %x = load i1* @x
+  store i1 %x, i1* %tmp4
+  store i32 456, i32* %a
+  store i1 false, i1* %b
+  store i32 2, i32* @w
+  %b5 = load i1* %b
+  store i1 %b5, i1* @x
+  %w6 = load i32* @w
+  %tmp7 = getelementptr i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 0), i32 %w6
+  %a8 = load i32* %a
+  store i32 %a8, i32* %tmp7
+  %w9 = load i32* @w
+  %tmp10 = getelementptr i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 0), i32 %w9
+  %x11 = load i1* @x
+  store i1 %x11, i1* %tmp10
+  store i32 1, i32* @w
+  %w12 = load i32* @w
+  %tmp13 = getelementptr i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 0), i32 %w12
+  %arrayval = load i32* %tmp13
+  %arrayval14 = load i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 2)
+  %addtmp = add i32 %arrayval, %arrayval14
+  call void @print_int(i32 %addtmp)
+  %arrayval15 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 1)
+  %zexttmp = zext i1 %arrayval15 to i32
+  call void @print_int(i32 %zexttmp)
+  %arrayval16 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 2)
+  %zexttmp17 = zext i1 %arrayval16 to i32
+  call void @print_int(i32 %zexttmp17)
+  %arrayval18 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 1)
+  br i1 %arrayval18, label %skctend, label %noskct
+
+noskct:                                           ; preds = %entry
+  %arrayval19 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 2)
+  %ortmp = or i1 %arrayval18, %arrayval19
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ %arrayval18, %entry ], [ %ortmp, %noskct ]
+  %zexttmp20 = zext i1 %phival to i32
+  call void @print_int(i32 %zexttmp20)
+  %w21 = load i32* @w
+  store i32 %w21, i32* %a
+  %arrayval22 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 2)
+  store i1 %arrayval22, i1* %b
+  %a23 = load i32* %a
+  call void @print_int(i32 %a23)
+  %b24 = load i1* %b
+  %zexttmp25 = zext i1 %b24 to i32
+  call void @print_int(i32 %zexttmp25)
+  ret i32 0
+}

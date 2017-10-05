@@ -1,0 +1,17 @@
+; ModuleID = 'Test'
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  br label %loop
+
+loop:                                             ; preds = %body, %entry
+  br i1 false, label %body, label %end
+
+body:                                             ; preds = %loop
+  store i32 1, i32* %x
+  br label %loop
+
+end:                                              ; preds = %loop
+  ret i32 0
+}

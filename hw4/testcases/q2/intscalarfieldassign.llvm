@@ -1,0 +1,9 @@
+; ModuleID = 'Test'
+
+@x = global i32 0
+
+define i32 @main() {
+entry:
+  store i32 1, i32* @x
+  ret i32 0
+}

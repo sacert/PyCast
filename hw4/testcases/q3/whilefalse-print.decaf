@@ -1,0 +1,12 @@
+extern void print_string(string);
+class Test {
+	int main() {
+		int x;
+		print_string("a");
+		while (false) {
+			x = 1;
+			print_string("b");
+		}
+		print_string("c");
+	}
+}

@@ -1,0 +1,55 @@
+; ModuleID = 'GreatestCommonDivisor'
+
+@a = global i32 10
+@b = global i32 20
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  %y = alloca i32
+  %z = alloca i32
+  %a = load i32* @a
+  store i32 %a, i32* %x
+  %b = load i32* @b
+  store i32 %b, i32* %y
+  %x1 = load i32* %x
+  %y2 = load i32* %y
+  %calltmp = call i32 @gcd(i32 %x1, i32 %y2)
+  store i32 %calltmp, i32* %z
+  %z3 = load i32* %z
+  call void @print_int(i32 %z3)
+  ret i32 0
+}
+
+define i32 @gcd(i32 %a, i32 %b) {
+entry:
+  %a1 = alloca i32
+  store i32 %a, i32* %a1
+  %b2 = alloca i32
+  store i32 %b, i32* %b2
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  %b3 = load i32* %b2
+  %eqtmp = icmp eq i32 %b3, 0
+  br i1 %eqtmp, label %iftrue, label %iffalse
+
+iftrue:                                           ; preds = %ifstart
+  %a4 = load i32* %a1
+  ret i32 %a4
+  br label %end
+
+end:                                              ; preds = %iffalse, %iftrue
+  ret i32 0
+
+iffalse:                                          ; preds = %ifstart
+  %b5 = load i32* %b2
+  %a6 = load i32* %a1
+  %b7 = load i32* %b2
+  %modtmp = srem i32 %a6, %b7
+  %calltmp = call i32 @gcd(i32 %b5, i32 %modtmp)
+  ret i32 %calltmp
+  br label %end
+}

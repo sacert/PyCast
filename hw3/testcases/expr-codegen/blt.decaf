@@ -1,0 +1,9 @@
+class Test {
+	int main()
+	{
+		bool b;
+		b = 13 < 15;
+		b = 13 < 13;
+		b = 15 < 13;
+	}
+}

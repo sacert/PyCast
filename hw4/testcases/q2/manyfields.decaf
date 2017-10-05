@@ -1,0 +1,8 @@
+class Test {
+	int w;
+	bool x;
+	int y[10];
+	bool z[10];
+	int main() {
+	}
+}

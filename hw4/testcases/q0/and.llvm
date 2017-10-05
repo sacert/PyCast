@@ -1,0 +1,45 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  br i1 true, label %noskct, label %skctend
+
+noskct:                                           ; preds = %entry
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ true, %entry ], [ true, %noskct ]
+  %zexttmp = zext i1 %phival to i32
+  call void @print_int(i32 %zexttmp)
+  br i1 true, label %noskct1, label %skctend2
+
+noskct1:                                          ; preds = %skctend
+  br label %skctend2
+
+skctend2:                                         ; preds = %noskct1, %skctend
+  %phival3 = phi i1 [ true, %skctend ], [ false, %noskct1 ]
+  %zexttmp4 = zext i1 %phival3 to i32
+  call void @print_int(i32 %zexttmp4)
+  br i1 false, label %noskct5, label %skctend6
+
+noskct5:                                          ; preds = %skctend2
+  br label %skctend6
+
+skctend6:                                         ; preds = %noskct5, %skctend2
+  %phival7 = phi i1 [ false, %skctend2 ], [ false, %noskct5 ]
+  %zexttmp8 = zext i1 %phival7 to i32
+  call void @print_int(i32 %zexttmp8)
+  br i1 false, label %noskct9, label %skctend10
+
+noskct9:                                          ; preds = %skctend6
+  br label %skctend10
+
+skctend10:                                        ; preds = %noskct9, %skctend6
+  %phival11 = phi i1 [ false, %skctend6 ], [ false, %noskct9 ]
+  %zexttmp12 = zext i1 %phival11 to i32
+  call void @print_int(i32 %zexttmp12)
+  ret i32 0
+}

@@ -1,0 +1,74 @@
+; ModuleID = 'Test'
+
+@x = global i1 false
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  br i1 true, label %skctend, label %noskct
+
+noskct:                                           ; preds = %entry
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ true, %entry ], [ true, %noskct ]
+  store i1 %phival, i1* @x
+  %x = load i1* @x
+  %zexttmp = zext i1 %x to i32
+  call void @print_int(i32 %zexttmp)
+  %x1 = load i1* @x
+  br i1 %x1, label %skctend3, label %noskct2
+
+noskct2:                                          ; preds = %skctend
+  br label %skctend3
+
+skctend3:                                         ; preds = %noskct2, %skctend
+  %phival4 = phi i1 [ %x1, %skctend ], [ %x1, %noskct2 ]
+  %zexttmp5 = zext i1 %phival4 to i32
+  call void @print_int(i32 %zexttmp5)
+  %x6 = load i1* @x
+  br i1 %x6, label %skctend8, label %noskct7
+
+noskct7:                                          ; preds = %skctend3
+  %ortmp = or i1 %x6, true
+  br label %skctend8
+
+skctend8:                                         ; preds = %noskct7, %skctend3
+  %phival9 = phi i1 [ %x6, %skctend3 ], [ %ortmp, %noskct7 ]
+  %zexttmp10 = zext i1 %phival9 to i32
+  call void @print_int(i32 %zexttmp10)
+  br i1 false, label %noskct11, label %skctend12
+
+noskct11:                                         ; preds = %skctend8
+  br label %skctend12
+
+skctend12:                                        ; preds = %noskct11, %skctend8
+  %phival13 = phi i1 [ false, %skctend8 ], [ false, %noskct11 ]
+  store i1 %phival13, i1* @x
+  %x14 = load i1* @x
+  %zexttmp15 = zext i1 %x14 to i32
+  call void @print_int(i32 %zexttmp15)
+  %x16 = load i1* @x
+  br i1 %x16, label %noskct17, label %skctend18
+
+noskct17:                                         ; preds = %skctend12
+  %andtmp = and i1 %x16, false
+  br label %skctend18
+
+skctend18:                                        ; preds = %noskct17, %skctend12
+  %phival19 = phi i1 [ %x16, %skctend12 ], [ %andtmp, %noskct17 ]
+  %zexttmp20 = zext i1 %phival19 to i32
+  call void @print_int(i32 %zexttmp20)
+  %x21 = load i1* @x
+  br i1 %x21, label %noskct22, label %skctend23
+
+noskct22:                                         ; preds = %skctend18
+  br label %skctend23
+
+skctend23:                                        ; preds = %noskct22, %skctend18
+  %phival24 = phi i1 [ %x21, %skctend18 ], [ %x21, %noskct22 ]
+  %zexttmp25 = zext i1 %phival24 to i32
+  call void @print_int(i32 %zexttmp25)
+  ret i32 0
+}

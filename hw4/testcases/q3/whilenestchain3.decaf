@@ -1,0 +1,102 @@
+extern void print_int(int);
+extern void print_string(string);
+class Test {
+	int main() {
+		int x;
+		int y;
+		int z;
+
+		x = 0;
+		print_string("a");
+		print_int(x);
+		while (x < 3) {
+			print_string("b");
+			print_int(x);
+			x = x + 1;
+			y = 0;
+			print_string("c");
+			print_int(y);
+			while (y < 2) {
+				print_string("d");
+				print_int(y);
+				y = y + 1;
+				z = 0;
+				print_string("e");
+				print_int(z);
+				while (z < 5) {
+					print_string("f");
+					print_int(z);
+					z = z + 1;
+				}
+				print_string("g");
+				print_int(z);
+			}
+			print_string("h");
+			print_int(y);
+		}
+		print_string("i");
+		print_int(x);
+
+		x = 0;
+		print_string("a");
+		print_int(x);
+		while (x < 0) {
+			print_string("b");
+			print_int(x);
+			x = x + 1;
+			y = 0;
+			print_string("c");
+			print_int(y);
+			while (y < 2) {
+				print_string("d");
+				print_int(y);
+				y = y + 1;
+				z = 0;
+				print_string("e");
+				print_int(z);
+				while (z < 5) {
+					print_string("f");
+					print_int(z);
+					z = z + 1;
+				}
+				print_string("g");
+				print_int(z);
+			}
+			print_string("h");
+			print_int(y);
+		}
+		print_string("i");
+		print_int(x);
+
+		x = 0;
+		print_string("a");
+		print_int(x);
+		while (x < 2) {
+			print_string("b");
+			print_int(x);
+			x = x + 1;
+			y = 0;
+			print_string("c");
+			print_int(y);
+			while (y < 1) {
+				print_string("d");
+				print_int(y);
+				y = y + 1;
+				z = 0;
+				print_string("e");
+				print_int(z);
+				while (z < 4) {
+					print_string("f");
+					print_int(z);
+					z = z + 1;
+				}
+				print_string("g");
+				print_int(z);
+			}
+			print_string("h");
+			print_int(y);
+		}
+		print_string("i");
+		print_int(x);
+	}
+}

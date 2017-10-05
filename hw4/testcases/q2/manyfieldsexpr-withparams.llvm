@@ -1,0 +1,93 @@
+; ModuleID = 'Test'
+
+@w = global i32 0
+@x = global i1 false
+@y = global [10 x i32] zeroinitializer
+@z = global [10 x i1] zeroinitializer
+
+declare void @print_int(i32)
+
+define void @test(i32 %i1, i32 %i2, i1 %j1, i1 %j2) {
+entry:
+  %i11 = alloca i32
+  store i32 %i1, i32* %i11
+  %i22 = alloca i32
+  store i32 %i2, i32* %i22
+  %j13 = alloca i1
+  store i1 %j1, i1* %j13
+  %j24 = alloca i1
+  store i1 %j2, i1* %j24
+  %a = alloca i32
+  %b = alloca i1
+  %i15 = load i32* %i11
+  store i32 %i15, i32* %a
+  %j16 = load i1* %j13
+  store i1 %j16, i1* %b
+  store i32 1, i32* @w
+  %b7 = load i1* %b
+  store i1 %b7, i1* @x
+  %w = load i32* @w
+  %tmp = getelementptr i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 0), i32 %w
+  %a8 = load i32* %a
+  store i32 %a8, i32* %tmp
+  %w9 = load i32* @w
+  %tmp10 = getelementptr i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 0), i32 %w9
+  %x = load i1* @x
+  store i1 %x, i1* %tmp10
+  %i211 = load i32* %i22
+  store i32 %i211, i32* %a
+  %j212 = load i1* %j24
+  store i1 %j212, i1* %b
+  store i32 2, i32* @w
+  %b13 = load i1* %b
+  store i1 %b13, i1* @x
+  %w14 = load i32* @w
+  %tmp15 = getelementptr i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 0), i32 %w14
+  %a16 = load i32* %a
+  store i32 %a16, i32* %tmp15
+  %w17 = load i32* @w
+  %tmp18 = getelementptr i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 0), i32 %w17
+  %x19 = load i1* @x
+  store i1 %x19, i1* %tmp18
+  store i32 1, i32* @w
+  %w20 = load i32* @w
+  %tmp21 = getelementptr i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 0), i32 %w20
+  %arrayval = load i32* %tmp21
+  %arrayval22 = load i32* getelementptr inbounds ([10 x i32]* @y, i32 0, i32 2)
+  %addtmp = add i32 %arrayval, %arrayval22
+  call void @print_int(i32 %addtmp)
+  %arrayval23 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 1)
+  %zexttmp = zext i1 %arrayval23 to i32
+  call void @print_int(i32 %zexttmp)
+  %arrayval24 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 2)
+  %zexttmp25 = zext i1 %arrayval24 to i32
+  call void @print_int(i32 %zexttmp25)
+  %arrayval26 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 1)
+  br i1 %arrayval26, label %skctend, label %noskct
+
+noskct:                                           ; preds = %entry
+  %arrayval27 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 2)
+  %ortmp = or i1 %arrayval26, %arrayval27
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ %arrayval26, %entry ], [ %ortmp, %noskct ]
+  %zexttmp28 = zext i1 %phival to i32
+  call void @print_int(i32 %zexttmp28)
+  %w29 = load i32* @w
+  store i32 %w29, i32* %a
+  %arrayval30 = load i1* getelementptr inbounds ([10 x i1]* @z, i32 0, i32 2)
+  store i1 %arrayval30, i1* %b
+  %a31 = load i32* %a
+  call void @print_int(i32 %a31)
+  %b32 = load i1* %b
+  %zexttmp33 = zext i1 %b32 to i32
+  call void @print_int(i32 %zexttmp33)
+  ret void
+}
+
+define i32 @main() {
+entry:
+  call void @test(i32 123, i32 456, i1 true, i1 false)
+  ret i32 0
+}

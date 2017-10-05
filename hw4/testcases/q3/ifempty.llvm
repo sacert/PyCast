@@ -1,0 +1,17 @@
+; ModuleID = 'Test'
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  store i32 0, i32* %x
+  br label %ifstart
+
+ifstart:                                          ; preds = %entry
+  br i1 true, label %iftrue, label %end
+
+iftrue:                                           ; preds = %ifstart
+  br label %end
+
+end:                                              ; preds = %iftrue, %ifstart
+  ret i32 0
+}

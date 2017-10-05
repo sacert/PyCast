@@ -1,0 +1,6 @@
+class Test {
+	void test1(int x) {
+		int y;
+		y = x + 1;
+	}
+}

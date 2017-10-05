@@ -1,0 +1,27 @@
+{
+     "firstName": "John",
+     "lastName": "Smith",
+     "age": 25,
+     "gps": [-122, 2.625],
+     "address":
+     {
+         "streetAddress": "21 2nd Street",
+         "city": "New York",
+         "state": "NY",
+         "postalCode": "10021",
+         "mytest": { "null": null }
+     },
+     "phoneNumber":
+     [
+         {
+           "primes": [3,5,1],
+           "type": "home",
+           "number": "212 555-1234"
+         },
+         {
+           "primes": [3,5,1],
+           "type": "fax",
+           "number": "646 555-4567"
+         }
+     ]
+ }

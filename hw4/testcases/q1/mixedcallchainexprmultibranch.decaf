@@ -1,0 +1,27 @@
+extern void print_int(int);
+
+class Test {
+	void test3(bool a, int x) {
+		print_int(x);
+		print_int(a);
+	}
+	void test2b(int x, bool a) {
+		print_int(x);
+		print_int(a);
+		test3(a, x);
+	}
+	void test2a(int x, bool a) {
+		print_int(x);
+		print_int(a);
+		test3(!a, x+1);
+	}
+	void test1(bool a, int x) {
+		print_int(x);
+		print_int(a);
+		test2a(x+1, !a);
+		test2b(x+1, !a);
+	}
+	int main() {
+		test1(true, 1);
+	}
+}

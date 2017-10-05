@@ -1,0 +1,11 @@
+; ModuleID = 'Test'
+
+declare i32 @read_int()
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  %calltmp = call i32 @read_int()
+  store i32 %calltmp, i32* %x
+  ret i32 0
+}

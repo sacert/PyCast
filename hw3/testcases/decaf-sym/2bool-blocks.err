@@ -1,0 +1,5 @@
+defined variable: x, with type: bool, on line number: 3
+defined variable: y, with type: int, on line number: 4
+defined variable: p, with type: int, on line number: 6
+defined variable: q, with type: int, on line number: 6
+defined variable: y, with type: bool, on line number: 8

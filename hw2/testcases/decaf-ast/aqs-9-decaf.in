@@ -1,0 +1,36 @@
+class QuickSort {
+	int partition(int left, int right, int pivot) {
+	
+		int leftPtr;
+		int rightPtr;
+		
+		leftPtr = left-1;
+		rightPtr = right;
+
+		while (true) {
+			while (true) {
+				leftPtr = leftPtr + 1;
+				if (list[leftPtr] >= pivot) {
+					break;
+				}
+			}
+			while (true) {
+				if (rightPtr <= 0) {
+					break;
+				}
+				rightPtr = rightPtr - 1;
+				if (list[rightPtr] <= pivot) {
+					break;
+				}
+			}
+			if (leftPtr >= rightPtr) {
+				break;
+			} else {
+				swap(leftPtr,rightPtr);
+			}
+		}
+		
+		swap(leftPtr, right);
+		return(leftPtr);
+	}
+}

@@ -1,0 +1,23 @@
+extern void print_int(int);
+class Test {
+	int main() {
+		int x;
+		int y;
+		int z;
+		for(x = 0; x < 100; x = x + 1) {
+			print_int(x);
+			for(y = 0; y < 2; y = y + 1) {
+				print_int(y);
+				for(z = 0; z < 5; z = z + 1) {
+					print_int(z);
+					if (z == 3) {
+						break;
+					}
+				}
+			}
+			if (x == 5) {
+				break;
+			}
+		}
+	}
+}

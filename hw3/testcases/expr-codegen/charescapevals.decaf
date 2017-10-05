@@ -1,0 +1,15 @@
+extern void print_int(int);
+class Test {
+	int main()
+	{
+		print_int('\t');
+		print_int('\v');
+		print_int('\r');
+		print_int('\n');
+		print_int('\a');
+		print_int('\f');
+		print_int('\b');
+		print_int('\\');
+		print_int('\'');
+	}
+}

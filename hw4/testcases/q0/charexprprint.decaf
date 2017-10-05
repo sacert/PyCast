@@ -1,0 +1,9 @@
+extern void print_int(int);
+class Test {
+	int main()
+	{
+		int x;
+		x = 'f' - 'a';
+		print_int(x);
+	}
+}

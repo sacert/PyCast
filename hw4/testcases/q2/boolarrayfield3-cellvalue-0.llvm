@@ -1,0 +1,11 @@
+; ModuleID = 'Test'
+
+@x = global [3 x i1] zeroinitializer
+
+define i32 @main() {
+entry:
+  %y = alloca i1
+  %arrayval = load i1* getelementptr inbounds ([3 x i1]* @x, i32 0, i32 0)
+  store i1 %arrayval, i1* %y
+  ret i32 0
+}

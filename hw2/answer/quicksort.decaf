@@ -1,0 +1,70 @@
+extern void print_int(int);
+extern void print_string(string);
+
+class QuickSort {
+  int list[100];
+
+  void initList() {
+    int i;
+    for (i = 0; i < 100; i = i + 1) {
+      list[i] = (i * 2382983) % 100;
+    }
+  }
+
+  //takes as arguments the low index and high index of array (0 indexed)
+  void quicksort(int lo, int hi) {
+    int p;
+    if (lo < hi) {
+      p = partition(lo, hi);
+      quicksort(lo, p);
+      quicksort(p+1, hi);
+    }
+  }
+
+  int partition(int lo, int hi) {
+    int pivot;
+    int i;
+    int j;
+    pivot = list[lo];
+    i = lo;
+    j = hi;
+    while(true) {
+      while (list[i] < pivot) {
+        i = i + 1;
+      }
+      while (list[j] > pivot) {
+        j = j - 1;
+      }
+      if(i >= j) {
+        return(j);
+      }else {
+        int temp;
+        temp = list[i];
+        list[i] = list[j];
+        list[j] = temp;
+      }
+    }
+  }
+
+  void printList() {
+    int i;
+    for(i = 0; i < 100; i = i + 1) {
+      print_int(list[i]);
+      print_string(" ");
+    }
+  }
+
+  int main () {
+    initList();
+
+    print_string("List: \n");
+    printList();
+
+    quicksort(0, 99);
+    print_string("\nAfter sorting: \n");
+    print_string("List: \n");
+    printList();
+
+  }
+
+}

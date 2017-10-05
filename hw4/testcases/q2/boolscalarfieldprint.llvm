@@ -1,0 +1,18 @@
+; ModuleID = 'Test'
+
+@x = global i1 false
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  store i1 true, i1* @x
+  %x = load i1* @x
+  %zexttmp = zext i1 %x to i32
+  call void @print_int(i32 %zexttmp)
+  store i1 false, i1* @x
+  %x1 = load i1* @x
+  %zexttmp2 = zext i1 %x1 to i32
+  call void @print_int(i32 %zexttmp2)
+  ret i32 0
+}

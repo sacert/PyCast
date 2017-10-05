@@ -1,0 +1,8 @@
+class Test {
+	int x[2];
+	int main() {
+		int y;
+		y = x[0];
+		y = x[1];
+	}
+}

@@ -1,0 +1,5 @@
+extern void print_int(int);
+class Test {
+	int main()
+	{ print_int(2+2*3+5); }
+}

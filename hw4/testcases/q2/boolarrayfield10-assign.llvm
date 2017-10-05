@@ -1,0 +1,18 @@
+; ModuleID = 'Test'
+
+@x = global [10 x i1] zeroinitializer
+
+define i32 @main() {
+entry:
+  store i1 true, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 0)
+  store i1 false, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 1)
+  store i1 true, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 2)
+  store i1 false, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 3)
+  store i1 true, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 4)
+  store i1 false, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 5)
+  store i1 true, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 6)
+  store i1 false, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 7)
+  store i1 true, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 8)
+  store i1 false, i1* getelementptr inbounds ([10 x i1]* @x, i32 0, i32 9)
+  ret i32 0
+}

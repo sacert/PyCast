@@ -1,0 +1,16 @@
+; ModuleID = 'Test'
+
+define i32 @main() {
+entry:
+  %c = alloca i32
+  store i32 9, i32* %c
+  store i32 11, i32* %c
+  store i32 13, i32* %c
+  store i32 10, i32* %c
+  store i32 7, i32* %c
+  store i32 12, i32* %c
+  store i32 8, i32* %c
+  store i32 92, i32* %c
+  store i32 39, i32* %c
+  ret i32 0
+}

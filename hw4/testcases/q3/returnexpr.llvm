@@ -1,0 +1,14 @@
+; ModuleID = 'Test'
+
+define i32 @test() {
+entry:
+  ret i32 123
+}
+
+define i32 @main() {
+entry:
+  %x = alloca i32
+  %calltmp = call i32 @test()
+  store i32 %calltmp, i32* %x
+  ret i32 0
+}

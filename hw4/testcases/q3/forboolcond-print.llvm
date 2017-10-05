@@ -1,0 +1,30 @@
+; ModuleID = 'Test'
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  %x = alloca i1
+  store i1 true, i1* %x
+  br label %loop
+
+loop:                                             ; preds = %next, %entry
+  %x1 = load i1* %x
+  %neqtmp = icmp ne i1 %x1, false
+  br i1 %neqtmp, label %body, label %end
+
+body:                                             ; preds = %loop
+  %x2 = load i1* %x
+  %zexttmp = zext i1 %x2 to i32
+  call void @print_int(i32 %zexttmp)
+  br label %next
+
+next:                                             ; preds = %body
+  %x3 = load i1* %x
+  %nottmp = xor i1 %x3, true
+  store i1 %nottmp, i1* %x
+  br label %loop
+
+end:                                              ; preds = %loop
+  ret i32 0
+}

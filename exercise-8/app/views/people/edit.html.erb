@@ -1,0 +1,49 @@
+<h1>Edit Contact</h1>
+ 
+<%= form_for :contact, url: person_path(@contact), method: :patch do |f| %>
+ 
+  <% if @contact.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@contact.errors.count, "error") %> prohibited
+        this contact from being saved:
+      </h2>
+      <ul>
+        <% @contact.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ 
+<p>
+    <%= f.label :"First Name" %><br>
+    <%= f.text_field :FirstName %>
+  </p>
+ 
+  <p>
+    <%= f.label :"Last Name" %><br>
+    <%= f.text_field :LastName %>
+  </p>
+
+   <p>
+    <%= f.label :"Email" %><br>
+    <%= f.email_field :Email %>
+  </p>
+
+   <p>
+    <%= f.label :"Phone#" %><br>
+    <%= f.text_field :"Phone" %>
+  </p>
+
+  <p>
+    <%= f.label :Other %><br>
+    <%= f.text_area :Other %>
+  </p>
+ 
+  <p>
+    <%= f.submit %>
+  </p> 
+<% end %>
+ 
+<%= link_to 'Back', people_path %>

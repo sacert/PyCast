@@ -1,0 +1,6 @@
+Tasks I’ve completed:
+
+-  worked on question 8
+1 ) combined yacc file ast.cc files together
+2 ) wrote codegen functions for all ast nodes, except implementing symbol table
+3 ) ran testcases and debugged accordingly

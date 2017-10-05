@@ -1,0 +1,10 @@
+extern void print_int(int);
+
+class Test {
+	void test(int a) {
+		print_int(a + 10);
+	}
+	int main() {
+		test(1);
+	}
+}

@@ -1,0 +1,7 @@
+class Test {
+	bool test() {
+		return ((10 + 4) / 2);
+	}
+	int main() {
+	}
+}

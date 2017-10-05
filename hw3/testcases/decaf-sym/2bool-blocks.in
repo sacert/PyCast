@@ -1,0 +1,16 @@
+class C {
+	int main() {
+        bool x;
+        int y; 
+        { 
+            int p, q; 
+            { 
+                bool y; 
+                x = true; 
+                y = false;
+                p = 1;
+                q = 1;
+            } 
+        }
+    }
+}

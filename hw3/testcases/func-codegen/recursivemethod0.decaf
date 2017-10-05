@@ -1,0 +1,14 @@
+extern void print_int(int);
+
+class Test {
+	void test(int x) {
+        int y;
+        y = 1/0;
+        test(x+y);
+	}
+	int main() {
+        int x;
+        x = 1;
+        test(x);
+	}
+}

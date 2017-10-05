@@ -1,0 +1,14 @@
+
+extern void print_int(int);
+
+class Error7 {
+
+    void main() {
+       int z;
+       z = '';
+
+       // print_int is part of the standard input-output library
+       print_int(z); 
+    }
+
+}

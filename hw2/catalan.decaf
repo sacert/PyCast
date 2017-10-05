@@ -1,0 +1,27 @@
+
+extern void print_int(int);
+extern int read_int();
+
+class Catalan {
+
+    void main() {
+       print_int( cat( read_int() ) );
+    }
+
+    // factorial of n
+    int fact(int n) {
+       if (n == 1) { return(1); }
+       else { return(n*fact(n-1)); }
+    }
+
+    // a choose b
+    int choose(int a, int b) { 
+       return( fact(a) / (fact(b)*fact(a-b)) ); 
+    }
+
+    // catalan number of n
+    int cat(int n) { 
+       return( choose(2*n,n)/(n+1) ); 
+    }
+    
+}

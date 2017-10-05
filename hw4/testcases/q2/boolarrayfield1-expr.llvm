@@ -1,0 +1,39 @@
+; ModuleID = 'Test'
+
+@x = global [1 x i1] zeroinitializer
+
+declare void @print_int(i32)
+
+define i32 @main() {
+entry:
+  br i1 true, label %skctend, label %noskct
+
+noskct:                                           ; preds = %entry
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ true, %entry ], [ true, %noskct ]
+  store i1 %phival, i1* getelementptr inbounds ([1 x i1]* @x, i32 0, i32 0)
+  %arrayval = load i1* getelementptr inbounds ([1 x i1]* @x, i32 0, i32 0)
+  br i1 %arrayval, label %noskct1, label %skctend2
+
+noskct1:                                          ; preds = %skctend
+  %andtmp = and i1 %arrayval, false
+  br label %skctend2
+
+skctend2:                                         ; preds = %noskct1, %skctend
+  %phival3 = phi i1 [ %arrayval, %skctend ], [ %andtmp, %noskct1 ]
+  %zexttmp = zext i1 %phival3 to i32
+  call void @print_int(i32 %zexttmp)
+  %arrayval4 = load i1* getelementptr inbounds ([1 x i1]* @x, i32 0, i32 0)
+  br i1 %arrayval4, label %skctend6, label %noskct5
+
+noskct5:                                          ; preds = %skctend2
+  br label %skctend6
+
+skctend6:                                         ; preds = %noskct5, %skctend2
+  %phival7 = phi i1 [ %arrayval4, %skctend2 ], [ %arrayval4, %noskct5 ]
+  %zexttmp8 = zext i1 %phival7 to i32
+  call void @print_int(i32 %zexttmp8)
+  ret i32 0
+}

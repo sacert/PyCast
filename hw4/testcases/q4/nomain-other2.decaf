@@ -1,0 +1,6 @@
+class Test {
+	void test1(int x) {
+	}
+	void test2(int x) {
+	}
+}

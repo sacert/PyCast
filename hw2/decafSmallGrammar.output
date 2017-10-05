@@ -1,0 +1,283 @@
+State 5 conflicts: 2 shift/reduce
+State 9 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: CLASS ID LCB field_decl_list method_decl_list RCB
+
+    2 field_decl_list: field_decl field_decl_list
+    3                | /* empty */
+
+    4 method_decl_list: method_decl method_decl_list
+    5                 | /* empty */
+
+    6 field_decl: type ID ASSIGN INTCONSTANT SEMICOLON
+
+    7 method_decl: return_type ID LPAREN RPAREN
+
+    8 return_type: type
+    9            | VOID
+
+   10 type: INT
+   11     | BOOL
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+CLASS (258) 1
+ID (259) 1 6 7
+LCB (260) 1
+RCB (261) 1
+ASSIGN (262) 6
+INTCONSTANT (263) 6
+SEMICOLON (264) 6
+LPAREN (265) 7
+RPAREN (266) 7
+VOID (267) 9
+INT (268) 10
+BOOL (269) 11
+
+
+Nonterminals, with rules where they appear
+
+$accept (15)
+    on left: 0
+program (16)
+    on left: 1, on right: 0
+field_decl_list (17)
+    on left: 2 3, on right: 1 2
+method_decl_list (18)
+    on left: 4 5, on right: 1 4
+field_decl (19)
+    on left: 6, on right: 2
+method_decl (20)
+    on left: 7, on right: 4
+return_type (21)
+    on left: 8 9, on right: 7
+type (22)
+    on left: 10 11, on right: 6 8
+
+
+state 0
+
+    0 $accept: . program $end
+
+    CLASS  shift, and go to state 1
+
+    program  go to state 2
+
+
+state 1
+
+    1 program: CLASS . ID LCB field_decl_list method_decl_list RCB
+
+    ID  shift, and go to state 3
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 4
+
+
+state 3
+
+    1 program: CLASS ID . LCB field_decl_list method_decl_list RCB
+
+    LCB  shift, and go to state 5
+
+
+state 4
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 5
+
+    1 program: CLASS ID LCB . field_decl_list method_decl_list RCB
+
+    INT   shift, and go to state 6
+    BOOL  shift, and go to state 7
+
+    INT       [reduce using rule 3 (field_decl_list)]
+    BOOL      [reduce using rule 3 (field_decl_list)]
+    $default  reduce using rule 3 (field_decl_list)
+
+    field_decl_list  go to state 8
+    field_decl       go to state 9
+    type             go to state 10
+
+
+state 6
+
+   10 type: INT .
+
+    $default  reduce using rule 10 (type)
+
+
+state 7
+
+   11 type: BOOL .
+
+    $default  reduce using rule 11 (type)
+
+
+state 8
+
+    1 program: CLASS ID LCB field_decl_list . method_decl_list RCB
+
+    VOID  shift, and go to state 11
+    INT   shift, and go to state 6
+    BOOL  shift, and go to state 7
+
+    $default  reduce using rule 5 (method_decl_list)
+
+    method_decl_list  go to state 12
+    method_decl       go to state 13
+    return_type       go to state 14
+    type              go to state 15
+
+
+state 9
+
+    2 field_decl_list: field_decl . field_decl_list
+
+    INT   shift, and go to state 6
+    BOOL  shift, and go to state 7
+
+    INT       [reduce using rule 3 (field_decl_list)]
+    BOOL      [reduce using rule 3 (field_decl_list)]
+    $default  reduce using rule 3 (field_decl_list)
+
+    field_decl_list  go to state 16
+    field_decl       go to state 9
+    type             go to state 10
+
+
+state 10
+
+    6 field_decl: type . ID ASSIGN INTCONSTANT SEMICOLON
+
+    ID  shift, and go to state 17
+
+
+state 11
+
+    9 return_type: VOID .
+
+    $default  reduce using rule 9 (return_type)
+
+
+state 12
+
+    1 program: CLASS ID LCB field_decl_list method_decl_list . RCB
+
+    RCB  shift, and go to state 18
+
+
+state 13
+
+    4 method_decl_list: method_decl . method_decl_list
+
+    VOID  shift, and go to state 11
+    INT   shift, and go to state 6
+    BOOL  shift, and go to state 7
+
+    $default  reduce using rule 5 (method_decl_list)
+
+    method_decl_list  go to state 19
+    method_decl       go to state 13
+    return_type       go to state 14
+    type              go to state 15
+
+
+state 14
+
+    7 method_decl: return_type . ID LPAREN RPAREN
+
+    ID  shift, and go to state 20
+
+
+state 15
+
+    8 return_type: type .
+
+    $default  reduce using rule 8 (return_type)
+
+
+state 16
+
+    2 field_decl_list: field_decl field_decl_list .
+
+    $default  reduce using rule 2 (field_decl_list)
+
+
+state 17
+
+    6 field_decl: type ID . ASSIGN INTCONSTANT SEMICOLON
+
+    ASSIGN  shift, and go to state 21
+
+
+state 18
+
+    1 program: CLASS ID LCB field_decl_list method_decl_list RCB .
+
+    $default  reduce using rule 1 (program)
+
+
+state 19
+
+    4 method_decl_list: method_decl method_decl_list .
+
+    $default  reduce using rule 4 (method_decl_list)
+
+
+state 20
+
+    7 method_decl: return_type ID . LPAREN RPAREN
+
+    LPAREN  shift, and go to state 22
+
+
+state 21
+
+    6 field_decl: type ID ASSIGN . INTCONSTANT SEMICOLON
+
+    INTCONSTANT  shift, and go to state 23
+
+
+state 22
+
+    7 method_decl: return_type ID LPAREN . RPAREN
+
+    RPAREN  shift, and go to state 24
+
+
+state 23
+
+    6 field_decl: type ID ASSIGN INTCONSTANT . SEMICOLON
+
+    SEMICOLON  shift, and go to state 25
+
+
+state 24
+
+    7 method_decl: return_type ID LPAREN RPAREN .
+
+    $default  reduce using rule 7 (method_decl)
+
+
+state 25
+
+    6 field_decl: type ID ASSIGN INTCONSTANT SEMICOLON .
+
+    $default  reduce using rule 6 (field_decl)

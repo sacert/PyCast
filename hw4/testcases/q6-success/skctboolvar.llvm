@@ -1,0 +1,93 @@
+; ModuleID = 'C'
+
+define i1 @rettrue() {
+entry:
+  ret i1 true
+}
+
+define i1 @retfalse() {
+entry:
+  ret i1 false
+}
+
+define i32 @main() {
+entry:
+  %x = alloca i1
+  %calltmp = call i1 @rettrue()
+  br i1 %calltmp, label %skctend, label %noskct
+
+noskct:                                           ; preds = %entry
+  br label %skctend
+
+skctend:                                          ; preds = %noskct, %entry
+  %phival = phi i1 [ %calltmp, %entry ], [ %calltmp, %noskct ]
+  store i1 %phival, i1* %x
+  %calltmp1 = call i1 @rettrue()
+  br i1 %calltmp1, label %skctend3, label %noskct2
+
+noskct2:                                          ; preds = %skctend
+  %ortmp = or i1 %calltmp1, true
+  br label %skctend3
+
+skctend3:                                         ; preds = %noskct2, %skctend
+  %phival4 = phi i1 [ %calltmp1, %skctend ], [ %ortmp, %noskct2 ]
+  store i1 %phival4, i1* %x
+  %calltmp5 = call i1 @retfalse()
+  br i1 %calltmp5, label %skctend7, label %noskct6
+
+noskct6:                                          ; preds = %skctend3
+  br label %skctend7
+
+skctend7:                                         ; preds = %noskct6, %skctend3
+  %phival8 = phi i1 [ %calltmp5, %skctend3 ], [ %calltmp5, %noskct6 ]
+  store i1 %phival8, i1* %x
+  %calltmp9 = call i1 @retfalse()
+  br i1 %calltmp9, label %skctend11, label %noskct10
+
+noskct10:                                         ; preds = %skctend7
+  %ortmp12 = or i1 %calltmp9, true
+  br label %skctend11
+
+skctend11:                                        ; preds = %noskct10, %skctend7
+  %phival13 = phi i1 [ %calltmp9, %skctend7 ], [ %ortmp12, %noskct10 ]
+  store i1 %phival13, i1* %x
+  %calltmp14 = call i1 @rettrue()
+  br i1 %calltmp14, label %noskct15, label %skctend16
+
+noskct15:                                         ; preds = %skctend11
+  %andtmp = and i1 %calltmp14, false
+  br label %skctend16
+
+skctend16:                                        ; preds = %noskct15, %skctend11
+  %phival17 = phi i1 [ %calltmp14, %skctend11 ], [ %andtmp, %noskct15 ]
+  store i1 %phival17, i1* %x
+  %calltmp18 = call i1 @rettrue()
+  br i1 %calltmp18, label %noskct19, label %skctend20
+
+noskct19:                                         ; preds = %skctend16
+  br label %skctend20
+
+skctend20:                                        ; preds = %noskct19, %skctend16
+  %phival21 = phi i1 [ %calltmp18, %skctend16 ], [ %calltmp18, %noskct19 ]
+  store i1 %phival21, i1* %x
+  %calltmp22 = call i1 @retfalse()
+  br i1 %calltmp22, label %noskct23, label %skctend24
+
+noskct23:                                         ; preds = %skctend20
+  %andtmp25 = and i1 %calltmp22, false
+  br label %skctend24
+
+skctend24:                                        ; preds = %noskct23, %skctend20
+  %phival26 = phi i1 [ %calltmp22, %skctend20 ], [ %andtmp25, %noskct23 ]
+  store i1 %phival26, i1* %x
+  %calltmp27 = call i1 @retfalse()
+  br i1 %calltmp27, label %noskct28, label %skctend29
+
+noskct28:                                         ; preds = %skctend24
+  br label %skctend29
+
+skctend29:                                        ; preds = %noskct28, %skctend24
+  %phival30 = phi i1 [ %calltmp27, %skctend24 ], [ %calltmp27, %noskct28 ]
+  store i1 %phival30, i1* %x
+  ret i32 0
+}

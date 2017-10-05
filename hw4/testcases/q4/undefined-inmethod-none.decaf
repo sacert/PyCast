@@ -1,0 +1,7 @@
+class Test {
+	void test() {
+		x = 0;
+	}
+	int main() {
+	}
+}
